@@ -17,8 +17,9 @@ void main()
 {
 	vec4 texAlpha    = texture2D( alpha, gl_TexCoord[0].st );
 
-	vec3 tx = vec3(0.5,0.5,0.5);
-	
+	vec3 tx = gl_Color;
+/*	vec3 tx = vec3(0.5,0.5,0.5);
+	*/
 	vec2 texcoord = vec2(gl_TexCoord[0].s * tex_scale_s, gl_TexCoord[0].t * tex_scale_t);
 
 	if(use_tex1)
