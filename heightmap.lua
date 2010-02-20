@@ -202,7 +202,7 @@ while not quit do
 	end
 
 	heightmap_modeler:update(dt)
-	heightmap_painter:update(dt)
+	heightmap_texturer:update(dt)
 
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
 	alledge_lua.gl.enable(alledge_lua.gl.DEPTH_TEST)
