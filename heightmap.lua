@@ -12,6 +12,7 @@ dofile('camera_controller.lua')
 dofile('curve_editor.lua')
 dofile('button.lua')
 dofile('heightmap_texturer.lua')
+dofile('heightmap_painter.lua')
 
 allegro5.init()
 allegro5.keyboard.install()
@@ -60,8 +61,8 @@ textures[1] = alledge_lua.bitmap.new()
 textures[1]:load("data/darwinian.png");
 textures[2] = alledge_lua.bitmap.new()
 textures[2]:load("data/Colormap.png");
-textures[4] = alledge_lua.bitmap.new()
-textures[4]:load("data/grass.png");
+textures[3] = alledge_lua.bitmap.new()
+textures[3]:load("data/grass.png");
 splat_texture = alledge_lua.bitmap.new()
 splat_texture:load("data/splat_texture.png");
 
@@ -88,6 +89,9 @@ heightmap_modeler:init(heightmap)
 heightmap_texturer = Heightmap_texturer:new ()
 heightmap_texturer:init(heightmap)
 
+heightmap_painter = Heightmap_painter:new ()
+heightmap_painter:init(heightmap)
+
 camera_controller = Camera_controller:new ()
 camera_controller:init(camera)
 
@@ -102,7 +106,7 @@ wrect = Rect:new ()
 wrect:init(0, 0, width, height)
 widget = Widget:new()
 --widget:init(wrect, heightmap_modeler)
-widget:init(wrect, heightmap_texturer)
+widget:init(wrect, heightmap_painter)
 widget:add_component(camera_controller)
 
 
@@ -203,6 +207,7 @@ while not quit do
 
 	heightmap_modeler:update(dt)
 	heightmap_texturer:update(dt)
+	heightmap_painter:update(dt)
 
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
 	alledge_lua.gl.enable(alledge_lua.gl.DEPTH_TEST)
