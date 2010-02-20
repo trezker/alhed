@@ -11,7 +11,7 @@ dofile('heightmap_modeler.lua')
 dofile('camera_controller.lua')
 dofile('curve_editor.lua')
 dofile('button.lua')
-dofile('heightmap_painter.lua')
+dofile('heightmap_texturer.lua')
 
 allegro5.init()
 allegro5.keyboard.install()
@@ -85,8 +85,8 @@ alledge_lua.scenenode.attach_node(transform, heightmap)
 heightmap_modeler = Heightmap_modeler:new ()
 heightmap_modeler:init(heightmap)
 
-heightmap_painter = Heightmap_painter:new ()
-heightmap_painter:init(heightmap)
+heightmap_texturer = Heightmap_texturer:new ()
+heightmap_texturer:init(heightmap)
 
 camera_controller = Camera_controller:new ()
 camera_controller:init(camera)
@@ -102,7 +102,7 @@ wrect = Rect:new ()
 wrect:init(0, 0, width, height)
 widget = Widget:new()
 --widget:init(wrect, heightmap_modeler)
-widget:init(wrect, heightmap_painter)
+widget:init(wrect, heightmap_texturer)
 widget:add_component(camera_controller)
 
 
