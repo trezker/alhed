@@ -14,6 +14,12 @@ dofile('button.lua')
 dofile('heightmap_texturer.lua')
 dofile('heightmap_painter.lua')
 
+fov = 45
+near = 1
+far = 1000
+width = 640
+height = 480
+
 allegro5.init()
 allegro5.keyboard.install()
 allegro5.mouse.install()
@@ -82,42 +88,21 @@ for i = 1, 4 do
 end
 alledge_lua.scenenode.attach_node(transform, heightmap)
 
-
-heightmap_modeler = Heightmap_modeler:new ()
-heightmap_modeler:init(heightmap)
-
-heightmap_texturer = Heightmap_texturer:new ()
-heightmap_texturer:init(heightmap)
-
-heightmap_painter = Heightmap_painter:new ()
-heightmap_painter:init(heightmap)
-
-
-edit_modes = {
-	{name = "Model", widget = heightmap_modeler},
-	{name = "Texture", widget = heightmap_texturer},
-	{name = "Color", widget = heightmap_painter}
-}
-edit_mode = 1
-
-
 camera_controller = Camera_controller:new ()
 camera_controller:init(camera)
 
-fov = 45
-near = 1
-far = 1000
-width = 640
-height = 480
 
+
+
+--Modeler interface
+heightmap_modeler = Heightmap_modeler:new ()
+heightmap_modeler:init(heightmap)
 
 wrect = Rect:new ()
 wrect:init(0, 0, width, height)
-widget = Widget:new()
---widget:init(wrect, heightmap_modeler)
-widget:init(wrect, edit_modes[edit_mode].widget)
-widget:add_component(camera_controller)
-
+modeler_widget = Widget:new()
+modeler_widget:init(wrect, heightmap_modeler)
+modeler_widget:add_component(camera_controller)
 
 wrect = Rect:new ()
 wrect:init(0, height-100, 100, height)
@@ -125,13 +110,21 @@ curve_editor = Curve_editor:new()
 curve_editor:init(wrect)
 curve_editor_widget = Widget:new()
 curve_editor_widget:init(wrect, curve_editor)
-widget:add_child(curve_editor_widget)
+modeler_widget:add_child(curve_editor_widget)
 heightmap_modeler:set_curve(curve_editor.curve)
 
+--Texturer interface
+heightmap_texturer = Heightmap_texturer:new ()
+heightmap_texturer:init(heightmap)
+
+wrect = Rect:new ()
+wrect:init(0, 0, width, height)
+texturer_widget = Widget:new()
+texturer_widget:init(wrect, heightmap_texturer)
+texturer_widget:add_component(camera_controller)
 
 current_texture = 1
 load_texture = function()
-	print ("Guacamole!")
 	native_dialog = allegro5.native_dialog.create ("", "test", "*.*", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
 	native_dialog:show()
 	n = native_dialog:get_count()
@@ -158,7 +151,7 @@ load_texture_button = Button:new ()
 load_texture_button:init(wrect, "Load", load_texture, nil)
 load_texture_widget = Widget:new()
 load_texture_widget:init(wrect, load_texture_button)
-widget:add_child(load_texture_widget)
+texturer_widget:add_child(load_texture_widget)
 
 texture_selectors = {}
 for i = 1, 4 do
@@ -170,9 +163,35 @@ for i = 1, 4 do
 	texture_selectors[i].button.image = textures[i]
 	texture_selectors[i].widget = Widget:new()
 	texture_selectors[i].widget:init(wrect, texture_selectors[i].button)
-	widget:add_child(texture_selectors[i].widget)
+	texturer_widget:add_child(texture_selectors[i].widget)
 end
 texture_selectors[1].button.text = "Active"
+
+
+--Painter interface
+heightmap_painter = Heightmap_painter:new ()
+heightmap_painter:init(heightmap)
+
+wrect = Rect:new ()
+wrect:init(0, 0, width, height)
+painter_widget = Widget:new()
+painter_widget:init(wrect, heightmap_painter)
+painter_widget:add_component(camera_controller)
+
+edit_modes = {
+	{name = "Model", widget = modeler_widget},
+	{name = "Texture", widget = texturer_widget},
+	{name = "Color", widget = painter_widget}
+}
+edit_mode = 1
+
+wrect = Rect:new ()
+wrect:init(0, 0, width, height)
+widget = Widget:new()
+widget:init(wrect, nil)
+widget:add_child(edit_modes[edit_mode].widget)
+
+
 
 last_time = allegro5.current_time()
 
@@ -202,13 +221,12 @@ while not quit do
 
 	if event.type == allegro5.keyboard.EVENT_UP then
 		if event.keycode == allegro5.keyboard.KEY_TAB then
-			widget:remove_component(edit_modes[edit_mode].widget)
+			widget:remove_child(edit_modes[edit_mode].widget)
 			edit_mode = edit_mode + 1
 			if edit_mode > table.getn(edit_modes) then
 				edit_mode = 1
 			end
---			widget:init(wrect, edit_modes[edit_mode].widget)
-			widget:add_component(edit_modes[edit_mode].widget)
+			widget:add_child(edit_modes[edit_mode].widget)
 		end
 		if event.keycode == allegro5.keyboard.KEY_LSHIFT then
 			shift = false

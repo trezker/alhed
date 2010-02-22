@@ -37,6 +37,21 @@ function Widget:add_child(widget)
 	table.insert(self.children_lib, widget)
 end
 
+function Widget:remove_child(widget)
+	for i, v in ipairs(self.children_lit) do
+		if v == widget then
+			table.remove(self.children_lit, i)
+			break
+		end
+	end
+	for i, v in ipairs(self.children_lib) do
+		if v == widget then
+			table.remove(self.children_lib, i)
+			break
+		end
+	end
+end
+
 function Widget:event(event)
 	for i,v in ipairs(self.children_lit) do
 		if not (mouse_x < v.brect.x1 or mouse_x > v.brect.x2 or mouse_y < v.brect.y1 or mouse_y > v.brect.y2) then
