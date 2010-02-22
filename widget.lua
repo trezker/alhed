@@ -26,6 +26,12 @@ function Widget:add_component(object)
 	end
 end
 
+function Widget:remove_component(object)
+	if object then
+		self.components[object] = nil
+	end
+end
+
 function Widget:add_child(widget)
 	table.insert(self.children_lit, 1, widget)
 	table.insert(self.children_lib, widget)

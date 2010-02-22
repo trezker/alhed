@@ -92,6 +92,15 @@ heightmap_texturer:init(heightmap)
 heightmap_painter = Heightmap_painter:new ()
 heightmap_painter:init(heightmap)
 
+
+edit_modes = {
+	{name = "Model", widget = heightmap_modeler},
+	{name = "Texture", widget = heightmap_texturer},
+	{name = "Color", widget = heightmap_painter}
+}
+edit_mode = 1
+
+
 camera_controller = Camera_controller:new ()
 camera_controller:init(camera)
 
@@ -106,7 +115,7 @@ wrect = Rect:new ()
 wrect:init(0, 0, width, height)
 widget = Widget:new()
 --widget:init(wrect, heightmap_modeler)
-widget:init(wrect, heightmap_painter)
+widget:init(wrect, edit_modes[edit_mode].widget)
 widget:add_component(camera_controller)
 
 
@@ -192,6 +201,15 @@ while not quit do
 	end
 
 	if event.type == allegro5.keyboard.EVENT_UP then
+		if event.keycode == allegro5.keyboard.KEY_TAB then
+			widget:remove_component(edit_modes[edit_mode].widget)
+			edit_mode = edit_mode + 1
+			if edit_mode > table.getn(edit_modes) then
+				edit_mode = 1
+			end
+--			widget:init(wrect, edit_modes[edit_mode].widget)
+			widget:add_component(edit_modes[edit_mode].widget)
+		end
 		if event.keycode == allegro5.keyboard.KEY_LSHIFT then
 			shift = false
 		end
@@ -223,7 +241,8 @@ while not quit do
 	widget:render()
 
 	allegro5.primitives.draw_filled_rectangle(0, 0, 64, 32, allegro5.color.map_rgb(255, 0, 0))
-	font:draw_text (0, 0, 0, "FPS: ")
+	font:draw_text (0, 0, 0, "Edit")
+	font:draw_text (0, 16, 0, edit_modes[edit_mode].name)
 
 --[[
 	for i = 1, 4 do
