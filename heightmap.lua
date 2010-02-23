@@ -62,13 +62,18 @@ line_node:set_color(1, 1, 1, 1)
 alledge_lua.scenenode.attach_node(transform, line_node);
 
 --Heightmap setup
+ground_texture = alledge_lua.bitmap.new()
+ground_texture:load("data/ground.png");
+
 textures = {}
+-- [[
 textures[1] = alledge_lua.bitmap.new()
 textures[1]:load("data/darwinian.png");
 textures[2] = alledge_lua.bitmap.new()
 textures[2]:load("data/Colormap.png");
 textures[3] = alledge_lua.bitmap.new()
 textures[3]:load("data/grass.png");
+--]]
 splat_texture = alledge_lua.bitmap.new()
 splat_texture:load("data/splat_texture.png");
 
@@ -80,6 +85,7 @@ heightmap = alledge_lua.heightmap.new()
 heightmap:set_texture_scale(.2)
 heightmap:set_tilesize(1)
 heightmap:resize(50, 30)
+heightmap:set_ground_texture(ground_texture)
 heightmap:set_splat_texture(splat_texture)
 for i = 1, 4 do
 	if textures[i] then

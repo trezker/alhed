@@ -1,8 +1,10 @@
+uniform sampler2D ground;
 uniform sampler2D alpha;
 uniform sampler2D tex1;
 uniform sampler2D tex2;
 uniform sampler2D tex3;
 uniform sampler2D tex4;
+uniform int ground_tex;
 uniform int use_tex1;
 uniform int use_tex2;
 uniform int use_tex3;
