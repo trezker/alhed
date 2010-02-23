@@ -13,6 +13,9 @@ dofile('curve_editor.lua')
 dofile('button.lua')
 dofile('heightmap_texturer.lua')
 dofile('heightmap_painter.lua')
+dofile('modeler_interface.lua')
+dofile('texturer_interface.lua')
+dofile('painter_interface.lua')
 
 fov = 45
 near = 1
@@ -66,7 +69,7 @@ ground_texture = alledge_lua.bitmap.new()
 ground_texture:load("data/ground.png");
 
 textures = {}
--- [[
+--[[
 textures[1] = alledge_lua.bitmap.new()
 textures[1]:load("data/darwinian.png");
 textures[2] = alledge_lua.bitmap.new()
@@ -97,92 +100,9 @@ alledge_lua.scenenode.attach_node(transform, heightmap)
 camera_controller = Camera_controller:new ()
 camera_controller:init(camera)
 
-
-
-
---Modeler interface
-heightmap_modeler = Heightmap_modeler:new ()
-heightmap_modeler:init(heightmap)
-
-wrect = Rect:new ()
-wrect:init(0, 0, width, height)
-modeler_widget = Widget:new()
-modeler_widget:init(wrect, heightmap_modeler)
-modeler_widget:add_component(camera_controller)
-
-wrect = Rect:new ()
-wrect:init(0, height-100, 100, height)
-curve_editor = Curve_editor:new()
-curve_editor:init(wrect)
-curve_editor_widget = Widget:new()
-curve_editor_widget:init(wrect, curve_editor)
-modeler_widget:add_child(curve_editor_widget)
-heightmap_modeler:set_curve(curve_editor.curve)
-
---Texturer interface
-heightmap_texturer = Heightmap_texturer:new ()
-heightmap_texturer:init(heightmap)
-
-wrect = Rect:new ()
-wrect:init(0, 0, width, height)
-texturer_widget = Widget:new()
-texturer_widget:init(wrect, heightmap_texturer)
-texturer_widget:add_component(camera_controller)
-
-current_texture = 1
-load_texture = function()
-	native_dialog = allegro5.native_dialog.create ("", "test", "*.*", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
-	native_dialog:show()
-	n = native_dialog:get_count()
-	if n>0 then
-		path = native_dialog:get_path(0)
-		print("Path: " .. path)
-		textures[current_texture] = alledge_lua.bitmap.new()
-		textures[current_texture]:load(path);
-		heightmap:set_texture(textures[current_texture], current_texture-1);
-		texture_selectors[current_texture].button.image = textures[current_texture]
-	end
-end
-
-select_texture = function(texture_n)
-	texture_selectors[current_texture].button.text = ""
-	current_texture = texture_n
-	texture_selectors[texture_n].button.image = textures[texture_n]
-	texture_selectors[texture_n].button.text = "Active"
-end
-
-wrect = Rect:new ()
-wrect:init(0, 32, 64, 64)
-load_texture_button = Button:new ()
-load_texture_button:init(wrect, "Load", load_texture, nil)
-load_texture_widget = Widget:new()
-load_texture_widget:init(wrect, load_texture_button)
-texturer_widget:add_child(load_texture_widget)
-
-texture_selectors = {}
-for i = 1, 4 do
-	wrect = Rect:new ()
-	wrect:init(i*64, 0, i*64+64, 64)
-	texture_selectors[i] = {}
-	texture_selectors[i].button = Button:new ()
-	texture_selectors[i].button:init(wrect, "", select_texture, i)
-	texture_selectors[i].button.image = textures[i]
-	texture_selectors[i].widget = Widget:new()
-	texture_selectors[i].widget:init(wrect, texture_selectors[i].button)
-	texturer_widget:add_child(texture_selectors[i].widget)
-end
-texture_selectors[1].button.text = "Active"
-
-
---Painter interface
-heightmap_painter = Heightmap_painter:new ()
-heightmap_painter:init(heightmap)
-
-wrect = Rect:new ()
-wrect:init(0, 0, width, height)
-painter_widget = Widget:new()
-painter_widget:init(wrect, heightmap_painter)
-painter_widget:add_component(camera_controller)
+modeler_widget = create_modeler_interface ()
+texturer_widget = create_texturer_interface ()
+painter_widget = create_painter_interface ()
 
 edit_modes = {
 	{name = "Model", widget = modeler_widget},
