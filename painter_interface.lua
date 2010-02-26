@@ -58,7 +58,21 @@ create_painter_interface = function()
 	color_field_widget:init(wrect, color_field)
 	painter_widget:add_child(color_field_widget)
 
+
+	wrect = Rect:new ()
+	wrect:init(0, 50, 50, 70)
+	radius_spinner = Spinner:new()
+	radius_spinner:init(wrect, radius_spinner_callback)
+	radius_spinner.value = 5
+	radius_spinner_widget = Widget:new()
+	radius_spinner_widget:init(wrect, radius_spinner)
+	painter_widget:add_child(radius_spinner_widget)
+
 	return painter_widget
+end
+
+radius_spinner_callback = function ()
+	heightmap_painter.radius = radius_spinner.value
 end
 
 hsv_to_rgb = function (h, s, v)

@@ -14,6 +14,7 @@ function Heightmap_painter:init(heightmap)
 	self.green = 1
 	self.blue = 1
 	self.channel = "red"
+	self.radius = 5
 end
 
 function Heightmap_painter:event(event)
@@ -65,6 +66,6 @@ function Heightmap_painter:update(dt)
 		oglpoint = camera:unproject(mouse_x, mouse_y)
 		alledge_lua.pop_view()
 
-		self.heightmap:color_filled_circle(oglpoint.x, oglpoint.z, 5, allegro5.color.map_rgb_f(self.red, self.green, self.blue))
+		self.heightmap:color_filled_circle(oglpoint.x, oglpoint.z, self.radius, allegro5.color.map_rgb_f(self.red, self.green, self.blue))
 	end
 end
