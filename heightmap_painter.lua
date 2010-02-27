@@ -13,7 +13,6 @@ function Heightmap_painter:init(heightmap)
 	self.red = 1
 	self.green = 1
 	self.blue = 1
-	self.channel = "red"
 	self.radius = 5
 end
 
@@ -29,33 +28,6 @@ function Heightmap_painter:event(event)
 		if event.button == 1 then
 			self.lmb = false
 			unsubscribe_from_event (allegro5.mouse.EVENT_UP, self.event, self)
-		end
-	end
-
-	if event.type == allegro5.keyboard.EVENT_UP then
-		if event.keycode == allegro5.keyboard.KEY_R then
-			self.channel = "red"
-		end
-		if event.keycode == allegro5.keyboard.KEY_G then
-			self.channel = "green"
-		end
-		if event.keycode == allegro5.keyboard.KEY_B then
-			self.channel = "blue"
-		end
-	end
-
-	if event.type == allegro5.mouse.EVENT_AXES then
-		if event.dz ~= 0 then
-			level = self[self.channel]
-			level = level + event.dz/10
-			if level < 0.1 then
-				level = 0
-			end
-			if level > 1 then
-				level = 1
-			end
-			print(self.channel .. ": " .. level)
-			self[self.channel] = level
 		end
 	end
 end
