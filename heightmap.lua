@@ -103,7 +103,9 @@ camera_controller:init(camera)
 
 modeler_widget = create_modeler_interface ()
 texturer_widget = create_texturer_interface ()
-painter_widget = create_painter_interface ()
+
+painter_interface = Painter_interface:new ()
+painter_widget = painter_interface:init ()
 
 edit_modes = {
 	{name = "Model", widget = modeler_widget},
@@ -170,7 +172,7 @@ while not quit do
 
 	heightmap_modeler:update(dt)
 	heightmap_texturer:update(dt)
-	heightmap_painter:update(dt)
+	painter_interface.heightmap_painter:update(dt)
 
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
 	alledge_lua.gl.enable(alledge_lua.gl.DEPTH_TEST)
