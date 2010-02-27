@@ -1,56 +1,67 @@
-create_texturer_interface = function()
-	heightmap_texturer = Heightmap_texturer:new ()
-	heightmap_texturer:init(heightmap)
+Texturer_interface = { }
+
+function Texturer_interface:new ()
+	o = {}
+	setmetatable(o, self)
+	self.__index = self
+	return o
+end
+
+function Texturer_interface:init ()
+	self.heightmap_texturer = Heightmap_texturer:new ()
+	self.heightmap_texturer:init(heightmap)
 
 	wrect = Rect:new ()
 	wrect:init(0, 0, width, height)
-	texturer_widget = Widget:new()
-	texturer_widget:init(wrect, heightmap_texturer)
-	texturer_widget:add_component(camera_controller)
+	self.texturer_widget = Widget:new()
+	self.texturer_widget:init(wrect, self.heightmap_texturer)
+	self.texturer_widget:add_component(camera_controller)
 
-	current_texture = 1
-	load_texture = function()
-		native_dialog = allegro5.native_dialog.create ("", "test", "*.*", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
-		native_dialog:show()
-		n = native_dialog:get_count()
-		if n>0 then
-			path = native_dialog:get_path(0)
-			print("Path: " .. path)
-			textures[current_texture] = alledge_lua.bitmap.new()
-			textures[current_texture]:load(path);
-			heightmap:set_texture(textures[current_texture], current_texture-1);
-			texture_selectors[current_texture].button.image = textures[current_texture]
-		end
-	end
-
-	select_texture = function(texture_n)
-		texture_selectors[current_texture].button.text = ""
-		current_texture = texture_n
-		texture_selectors[texture_n].button.image = textures[texture_n]
-		texture_selectors[texture_n].button.text = "Active"
-	end
+	self.current_texture = 1
 
 	wrect = Rect:new ()
 	wrect:init(0, 32, 64, 64)
-	load_texture_button = Button:new ()
-	load_texture_button:init(wrect, "Load", load_texture, nil)
-	load_texture_widget = Widget:new()
-	load_texture_widget:init(wrect, load_texture_button)
-	texturer_widget:add_child(load_texture_widget)
+	self.load_texture_button = Button:new ()
+	self.load_texture_button:init(wrect, "Load", self.load_texture, self)
+	self.load_texture_widget = Widget:new()
+	self.load_texture_widget:init(wrect, self.load_texture_button)
+	self.texturer_widget:add_child(self.load_texture_widget)
 
-	texture_selectors = {}
+	self.texture_selectors = {}
 	for i = 1, 4 do
 		wrect = Rect:new ()
 		wrect:init(i*64, 0, i*64+64, 64)
-		texture_selectors[i] = {}
-		texture_selectors[i].button = Button:new ()
-		texture_selectors[i].button:init(wrect, "", select_texture, i)
-		texture_selectors[i].button.image = textures[i]
-		texture_selectors[i].widget = Widget:new()
-		texture_selectors[i].widget:init(wrect, texture_selectors[i].button)
-		texturer_widget:add_child(texture_selectors[i].widget)
+		self.texture_selectors[i] = {}
+		self.texture_selectors[i].button = Button:new ()
+		self.texture_selectors[i].button:init(wrect, "", self.select_texture, self, i)
+		self.texture_selectors[i].button.image = textures[i]
+		self.texture_selectors[i].widget = Widget:new()
+		self.texture_selectors[i].widget:init(wrect, self.texture_selectors[i].button)
+		self.texturer_widget:add_child(self.texture_selectors[i].widget)
 	end
-	texture_selectors[1].button.text = "Active"
+	self.texture_selectors[1].button.text = "Active"
 
-	return texturer_widget
+	return self.texturer_widget
+end
+
+function Texturer_interface:load_texture ()
+	native_dialog = allegro5.native_dialog.create ("", "test", "*.*", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
+	native_dialog:show()
+	n = native_dialog:get_count()
+	if n>0 then
+		path = native_dialog:get_path(0)
+		print("Path: " .. path)
+		textures[self.current_texture] = alledge_lua.bitmap.new()
+		textures[self.current_texture]:load(path);
+		heightmap:set_texture(textures[self.current_texture], self.current_texture-1);
+		self.texture_selectors[self.current_texture].button.image = textures[self.current_texture]
+	end
+end
+
+function Texturer_interface:select_texture (texture_n)
+	self.texture_selectors[self.current_texture].button.text = ""
+	self.current_texture = texture_n
+	self.heightmap_texturer.current_texture = texture_n
+	self.texture_selectors[texture_n].button.image = textures[texture_n]
+	self.texture_selectors[texture_n].button.text = "Active"
 end

@@ -7,17 +7,22 @@ function Button:new ()
 	return o
 end
 
-function Button:init(rect, text, callback, cbobject)
+function Button:init(rect, text, callback, cbobject, cbdata)
 	self.brect = rect
 	self.text = text
 	self.callback = callback
 	self.cbobject = cbobject
+	self.cbdata = cbdata
 end
 
 function Button:event(event)
 	if event.type == allegro5.mouse.EVENT_UP then
 		if event.button == 1 then
-			self.callback(self.cbobject)
+			if self.cbobject then
+				self.callback(self.cbobject, self.cbdata)
+			else
+				self.callback(self.cbdata)
+			end
 		end
 	end
 end

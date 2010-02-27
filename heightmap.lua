@@ -102,7 +102,9 @@ camera_controller = Camera_controller:new ()
 camera_controller:init(camera)
 
 modeler_widget = create_modeler_interface ()
-texturer_widget = create_texturer_interface ()
+
+texturer_interface = Texturer_interface:new ()
+texturer_widget = texturer_interface:init ()
 
 painter_interface = Painter_interface:new ()
 painter_widget = painter_interface:init ()
@@ -171,7 +173,7 @@ while not quit do
 	end
 
 	heightmap_modeler:update(dt)
-	heightmap_texturer:update(dt)
+	texturer_interface.heightmap_texturer:update(dt)
 	painter_interface.heightmap_painter:update(dt)
 
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
