@@ -10,6 +10,7 @@ end
 function Heightmap_modeler:init(heightmap)
 	self.heightmap = heightmap
 	self.curve = {-1, -.7, 0, .3, 0}
+	self.radius = 10
 end
 
 function Heightmap_modeler:set_curve(curve)
@@ -38,6 +39,6 @@ function Heightmap_modeler:update(dt)
 		oglpoint = camera:unproject(mouse_x, mouse_y)
 		alledge_lua.pop_view()
 
-		heightmap:apply_brush(oglpoint.x, oglpoint.z, 10, 1*dt, 5, self.curve);
+		heightmap:apply_brush(oglpoint.x, oglpoint.z, self.radius, 1*dt, 5, self.curve);
 	end
 end
