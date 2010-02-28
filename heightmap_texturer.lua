@@ -11,6 +11,7 @@ function Heightmap_texturer:init(heightmap)
 	self.heightmap = heightmap
 	self.opacity = 1
 	self.current_texture = 1
+	self.radius = 10
 end
 
 function Heightmap_texturer:set_curve(curve)
@@ -71,7 +72,7 @@ function Heightmap_texturer:update(dt)
 		elseif self.current_texture == 4 then
 			alledge_lua.gl.colormask(false, false, false, true);
 		end
-		allegro5.primitives.draw_filled_circle(oglpoint.x*scale_x, splat_texture:get_height()-oglpoint.z*scale_z, 10, paint_channel)
+		allegro5.primitives.draw_filled_circle(oglpoint.x*scale_x, splat_texture:get_height()-oglpoint.z*scale_z, self.radius, paint_channel)
 
 		alledge_lua.gl.colormask(true, true, true, true);
 		display:set_current()

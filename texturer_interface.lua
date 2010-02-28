@@ -41,7 +41,20 @@ function Texturer_interface:init ()
 	end
 	self.texture_selectors[1].button.text = "Active"
 
+	wrect = Rect:new ()
+	wrect:init(0, 70, 50, 90)
+	self.radius_spinner = Spinner:new()
+	self.radius_spinner:init(wrect, self.radius_spinner_callback, self)
+	self.radius_spinner.value = 10
+	self.radius_spinner_widget = Widget:new()
+	self.radius_spinner_widget:init(wrect, self.radius_spinner)
+	self.texturer_widget:add_child(self.radius_spinner_widget)
+
 	return self.texturer_widget
+end
+
+function Texturer_interface:radius_spinner_callback ()
+	self.heightmap_texturer.radius = self.radius_spinner.value
 end
 
 function Texturer_interface:load_texture ()
