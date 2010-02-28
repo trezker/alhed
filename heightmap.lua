@@ -101,7 +101,8 @@ alledge_lua.scenenode.attach_node(transform, heightmap)
 camera_controller = Camera_controller:new ()
 camera_controller:init(camera)
 
-modeler_widget = create_modeler_interface ()
+modeler_interface = Modeler_interface:new ()
+modeler_widget = modeler_interface:init ()
 
 texturer_interface = Texturer_interface:new ()
 texturer_widget = texturer_interface:init ()
@@ -172,7 +173,7 @@ while not quit do
 		mouse_y = event.y
 	end
 
-	heightmap_modeler:update(dt)
+	modeler_interface.heightmap_modeler:update(dt)
 	texturer_interface.heightmap_texturer:update(dt)
 	painter_interface.heightmap_painter:update(dt)
 
