@@ -56,7 +56,7 @@ alledge_lua.scenenode.attach_node(camera, light)
 
 transform = alledge_lua.transformnode.new()
 alledge_lua.scenenode.attach_node(light, transform)
-
+--[[
 line_start = alledge_lua.vector3.new(-1, -1, 1);
 line_end = alledge_lua.vector3.new(1, -1, 1);
 
@@ -64,6 +64,19 @@ line_node = alledge_lua.linenode.new()
 line_node:set_line(line_start, line_end)
 line_node:set_color(1, 1, 1, 1)
 alledge_lua.scenenode.attach_node(transform, line_node);
+--]]
+
+function save_heightmap ()
+	native_dialog = allegro5.native_dialog.create ("", "save", "*.*", 0)
+	native_dialog:show()
+	n = native_dialog:get_count()
+	if n>0 then
+		path = native_dialog:get_path(0)
+		print("Path: " .. path)
+		heightmap:save(path)
+	end
+end
+
 
 --Heightmap setup
 ground_texture = alledge_lua.bitmap.new()
@@ -90,6 +103,7 @@ heightmap:set_texture_scale(.2)
 heightmap:set_tilesize(1)
 heightmap:resize(50, 30)
 heightmap:set_ground_texture(ground_texture)
+heightmap:set_ground_texture_filename("data/ground.png")
 heightmap:set_splat_texture(splat_texture)
 for i = 1, 4 do
 	if textures[i] then
@@ -123,6 +137,13 @@ widget = Widget:new()
 widget:init(wrect, nil)
 widget:add_child(edit_modes[edit_mode].widget)
 
+wrect = Rect:new ()
+wrect:init(width-64, 32, width, 64)
+save_heightmap_button = Button:new ()
+save_heightmap_button:init(wrect, "Save", save_heightmap)
+save_heightmap_widget = Widget:new()
+save_heightmap_widget:init(wrect, save_heightmap_button)
+widget:add_child(save_heightmap_widget)
 
 
 last_time = allegro5.current_time()

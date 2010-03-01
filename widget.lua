@@ -13,8 +13,10 @@ end
 function Widget:init(rect, object)
 	self.brect = rect
 	self.components = {}
+	self.num_components = 0
 	if object then
 		self.components[object] = true
+		self.num_components = 1
 	end
 	self.children_lit = {}  --Last in top, for event passing in overlapping objects
 	self.children_lib = {}	--Last in bottom, for rendering bottom to top
@@ -23,12 +25,14 @@ end
 function Widget:add_component(object)
 	if object then
 		self.components[object] = true
+		self.num_components = self.num_components + 1
 	end
 end
 
 function Widget:remove_component(object)
 	if object then
 		self.components[object] = nil
+		self.num_components = self.num_components - 1
 	end
 end
 
@@ -55,14 +59,19 @@ end
 function Widget:event(event)
 	for i,v in ipairs(self.children_lit) do
 		if not (mouse_x < v.brect.x1 or mouse_x > v.brect.x2 or mouse_y < v.brect.y1 or mouse_y > v.brect.y2) then
-			v:event(event)
-			return
+			if v:event(event) then
+				return
+			end
 		end
 	end
 
+	if self.num_components == 0 then
+		return false
+	end
 	for k, v in pairs(self.components) do
 		k:event(event)
 	end
+	return true
 end
 
 function Widget:render()
