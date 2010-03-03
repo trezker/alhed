@@ -64,6 +64,15 @@ function Texturer_interface:radius_spinner_callback ()
 	self.heightmap_texturer.radius = self.radius_spinner.value
 end
 
+function Texturer_interface:refresh_textures()
+	print("Refreshing textures")
+	for t = 1, 4 do
+		textures[t] = heightmap:get_texture(t-1);
+		print(textures[t])
+		self.texture_selectors[t].button.image = textures[t]
+	end
+end
+
 function Texturer_interface:load_texture ()
 	native_dialog = allegro5.native_dialog.create ("", "test", "*.*", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
 	native_dialog:show()
@@ -74,6 +83,7 @@ function Texturer_interface:load_texture ()
 		textures[self.current_texture] = alledge_lua.bitmap.new()
 		textures[self.current_texture]:load(path);
 		heightmap:set_texture(textures[self.current_texture], self.current_texture-1);
+		heightmap:set_texture_filename(path, self.current_texture-1);
 		self.texture_selectors[self.current_texture].button.image = textures[self.current_texture]
 	end
 end

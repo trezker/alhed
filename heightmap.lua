@@ -77,6 +77,18 @@ function save_heightmap ()
 	end
 end
 
+function load_heightmap ()
+	native_dialog = allegro5.native_dialog.create ("", "load", "*.*", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
+	native_dialog:show()
+	n = native_dialog:get_count()
+	if n>0 then
+		path = native_dialog:get_path(0)
+		print("Path: " .. path)
+		heightmap:load(path)
+		texturer_interface:refresh_textures()
+	end
+end
+
 
 --Heightmap setup
 ground_texture = alledge_lua.bitmap.new()
@@ -144,6 +156,14 @@ save_heightmap_button:init(wrect, "Save", save_heightmap)
 save_heightmap_widget = Widget:new()
 save_heightmap_widget:init(wrect, save_heightmap_button)
 widget:add_child(save_heightmap_widget)
+
+wrect = Rect:new ()
+wrect:init(width-64, 0, width, 32)
+load_heightmap_button = Button:new ()
+load_heightmap_button:init(wrect, "Load", load_heightmap)
+load_heightmap_widget = Widget:new()
+load_heightmap_widget:init(wrect, load_heightmap_button)
+widget:add_child(load_heightmap_widget)
 
 
 last_time = allegro5.current_time()
