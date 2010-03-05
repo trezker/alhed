@@ -16,8 +16,16 @@ function Button:init(rect, text, callback, cbobject, cbdata)
 end
 
 function Button:event(event)
-	if event.type == allegro5.mouse.EVENT_UP then
+	if event.type == allegro5.mouse.EVENT_DOWN then
 		if event.button == 1 then
+			self.lmb = true
+			subscribe_to_event (allegro5.mouse.EVENT_UP, self.event, self)
+		end
+	end
+	if event.type == allegro5.mouse.EVENT_UP then
+		if event.button == 1 and self.lmb == true then
+			self.lmb = false
+			unsubscribe_from_event (allegro5.mouse.EVENT_UP, self.event, self)
 			if self.cbobject then
 				self.callback(self.cbobject, self.cbdata)
 			else
@@ -33,4 +41,9 @@ function Button:render()
 		self.image:draw_scaled(self.brect.x1, self.brect.y1, self.brect.x2 - self.brect.x1, self.brect.y2 - self.brect.y1, 0)
 	end
 	font:draw_text (self.brect.x1, self.brect.y1, 0, self.text)
+	if self.lmb then
+		allegro5.primitives.draw_rectangle(self.brect.x1, self.brect.y1, self.brect.x2, self.brect.y2, allegro5.color.map_rgba_f(0, 0, 0, 0.5), 2)
+	else
+		allegro5.primitives.draw_rectangle(self.brect.x1, self.brect.y1, self.brect.x2, self.brect.y2, allegro5.color.map_rgba_f(1, 1, 1, 0.5), 2)
+	end
 end

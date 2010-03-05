@@ -74,6 +74,7 @@ function Texturer_interface:refresh_textures()
 end
 
 function Texturer_interface:load_texture ()
+	print("visible dialog")
 	native_dialog = allegro5.native_dialog.create ("", "test", "*.*", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
 	native_dialog:show()
 	n = native_dialog:get_count()

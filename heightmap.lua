@@ -179,7 +179,12 @@ while not quit do
 	if event.type == allegro5.display.EVENT_CLOSE or event.type == allegro5.keyboard.EVENT_DOWN and event.keycode == allegro5.keyboard.KEY_ESCAPE then
 		quit = true
 	end
-	
+
+	if event.type == allegro5.mouse.EVENT_AXES or event.type == allegro5.mouse.EVENT_UP or event.type == allegro5.mouse.EVENT_DOWN then
+		mouse_x = event.x
+		mouse_y = event.y
+	end
+
 	widget:event(event)
 	dispatch_event (event)
 
@@ -207,11 +212,6 @@ while not quit do
 		if event.keycode == allegro5.keyboard.KEY_LCTRL then
 			ctrl = false
 		end
-	end
-
-	if event.type == allegro5.mouse.EVENT_AXES then
-		mouse_x = event.x
-		mouse_y = event.y
 	end
 
 	modeler_interface.heightmap_modeler:update(dt)
