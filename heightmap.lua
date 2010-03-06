@@ -147,10 +147,16 @@ wrect = Rect:new ()
 wrect:init(0, 0, width, height)
 widget = Widget:new()
 widget:init(wrect, nil)
-widget:add_child(edit_modes[edit_mode].widget)
 
 wrect = Rect:new ()
-wrect:init(width-64, 32, width, 64)
+wrect:init(0, 32, width, height)
+edit_mode_widget = Widget:new()
+edit_mode_widget:init(wrect, nil)
+edit_mode_widget:add_child(edit_modes[edit_mode].widget)
+widget:add_child(edit_mode_widget)
+
+wrect = Rect:new ()
+wrect:init(64, 0, 128, 32)
 save_heightmap_button = Button:new ()
 save_heightmap_button:init(wrect, "Save", save_heightmap)
 save_heightmap_widget = Widget:new()
@@ -158,7 +164,7 @@ save_heightmap_widget:init(wrect, save_heightmap_button)
 widget:add_child(save_heightmap_widget)
 
 wrect = Rect:new ()
-wrect:init(width-64, 0, width, 32)
+wrect:init(128, 0, 192, 32)
 load_heightmap_button = Button:new ()
 load_heightmap_button:init(wrect, "Load", load_heightmap)
 load_heightmap_widget = Widget:new()
@@ -199,12 +205,12 @@ while not quit do
 
 	if event.type == allegro5.keyboard.EVENT_UP then
 		if event.keycode == allegro5.keyboard.KEY_TAB then
-			widget:remove_child(edit_modes[edit_mode].widget)
+			edit_mode_widget:remove_child(edit_modes[edit_mode].widget)
 			edit_mode = edit_mode + 1
 			if edit_mode > table.getn(edit_modes) then
 				edit_mode = 1
 			end
-			widget:add_child(edit_modes[edit_mode].widget)
+			edit_mode_widget:add_child(edit_modes[edit_mode].widget)
 		end
 		if event.keycode == allegro5.keyboard.KEY_LSHIFT then
 			shift = false

@@ -37,7 +37,7 @@ function Texturer_interface:init ()
 	self.texture_selectors = {}
 	for i = 1, 4 do
 		wrect = Rect:new ()
-		wrect:init(i*64, 0, i*64+64, 64)
+		wrect:init(i*64, 32, i*64+64, 92)
 		self.texture_selectors[i] = {}
 		self.texture_selectors[i].button = Button:new ()
 		self.texture_selectors[i].button:init(wrect, "", self.select_texture, self, i)
@@ -49,7 +49,7 @@ function Texturer_interface:init ()
 	self.texture_selectors[1].button.text = "Active"
 
 	wrect = Rect:new ()
-	wrect:init(0, 70, 50, 90)
+	wrect:init(0, 64, 64, 92)
 	self.radius_spinner = Spinner:new()
 	self.radius_spinner:init(wrect, self.radius_spinner_callback, self)
 	self.radius_spinner.value = 10

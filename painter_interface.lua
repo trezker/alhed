@@ -43,7 +43,7 @@ function Painter_interface:init ()
 	sat_val_bitmap:save("data/sat_val_blend.png")	
 --]]
 	wrect = Rect:new ()
-	wrect:init(100+self.sat_val_bitmap:get_width(), 0, 100+self.sat_val_bitmap:get_width() + self.hue_bitmap:get_width(), self.hue_bitmap:get_height())
+	wrect:init(64+self.sat_val_bitmap:get_width(), 32, 64+self.sat_val_bitmap:get_width() + self.hue_bitmap:get_width(), 32+self.hue_bitmap:get_height())
 	self.hue = Hue:new()
 	self.hue:init(wrect, self.hue_bitmap, self.update_color, self)
 	self.hue_widget = Widget:new()
@@ -52,7 +52,7 @@ function Painter_interface:init ()
 
 	
 	wrect = Rect:new ()
-	wrect:init(100, 0, 100 + self.sat_val_bitmap:get_width(), self.sat_val_bitmap:get_height())
+	wrect:init(64, 32, 64 + self.sat_val_bitmap:get_width(), 32+self.sat_val_bitmap:get_height())
 	self.sat_val = Sat_val:new()
 	self.sat_val:init(wrect, self.sat_val_bitmap, self.update_color, self)
 	self.sat_val_widget = Widget:new()
@@ -60,7 +60,7 @@ function Painter_interface:init ()
 	self.painter_widget:add_child(self.sat_val_widget)
 
 	wrect = Rect:new ()
-	wrect:init(300, 0, 350, 50)
+	wrect:init(300, 32, 350, 64)
 	self.color_field = Color_field:new()
 	self.color_field:init(wrect)
 	self.color_field_widget = Widget:new()
@@ -69,7 +69,7 @@ function Painter_interface:init ()
 
 
 	wrect = Rect:new ()
-	wrect:init(0, 50, 50, 70)
+	wrect:init(0, 32, 64, 64)
 	self.radius_spinner = Spinner:new()
 	self.radius_spinner:init(wrect, self.radius_spinner_callback, self)
 	self.radius_spinner.value = 5
