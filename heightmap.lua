@@ -145,15 +145,15 @@ edit_mode = 1
 
 wrect = Rect:new ()
 wrect:init(0, 0, width, height)
-widget = Widget:new()
-widget:init(wrect, nil)
+gui_root = Widget:new()
+gui_root:init(wrect, nil)
 
 wrect = Rect:new ()
 wrect:init(0, 32, width, height)
 edit_mode_widget = Widget:new()
 edit_mode_widget:init(wrect, nil)
 edit_mode_widget:add_child(edit_modes[edit_mode].widget)
-widget:add_child(edit_mode_widget)
+gui_root:add_child(edit_mode_widget)
 
 wrect = Rect:new ()
 wrect:init(64, 0, 128, 32)
@@ -161,7 +161,7 @@ save_heightmap_button = Button:new ()
 save_heightmap_button:init(wrect, "Save", save_heightmap)
 save_heightmap_widget = Widget:new()
 save_heightmap_widget:init(wrect, save_heightmap_button)
-widget:add_child(save_heightmap_widget)
+gui_root:add_child(save_heightmap_widget)
 
 wrect = Rect:new ()
 wrect:init(128, 0, 192, 32)
@@ -169,7 +169,7 @@ load_heightmap_button = Button:new ()
 load_heightmap_button:init(wrect, "Load", load_heightmap)
 load_heightmap_widget = Widget:new()
 load_heightmap_widget:init(wrect, load_heightmap_button)
-widget:add_child(load_heightmap_widget)
+gui_root:add_child(load_heightmap_widget)
 
 
 last_time = allegro5.current_time()
@@ -191,7 +191,7 @@ while not quit do
 		mouse_y = event.y
 	end
 
-	widget:event(event)
+	gui_root:event(event)
 	dispatch_event (event)
 
 	if event.type == allegro5.keyboard.EVENT_DOWN then
@@ -235,7 +235,7 @@ while not quit do
 	alledge_lua.gl.disable(alledge_lua.gl.DEPTH_TEST)
 	alledge_lua.pop_view()
 
-	widget:render()
+	gui_root:render()
 
 	allegro5.primitives.draw_filled_rectangle(0, 0, 64, 32, allegro5.color.map_rgb(255, 0, 0))
 	font:draw_text (0, 0, 0, "Edit")
