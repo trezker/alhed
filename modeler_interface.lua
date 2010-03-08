@@ -9,7 +9,7 @@ end
 
 function Modeler_interface:init ()
 	self.heightmap_modeler = Heightmap_modeler:new ()
-	self.heightmap_modeler:init(heightmap)
+	self.heightmap_modeler:init()
 
 	wrect = Rect:new ()
 	wrect:init(0, 0, width, height)

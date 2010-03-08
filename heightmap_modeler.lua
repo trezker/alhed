@@ -7,8 +7,7 @@ function Heightmap_modeler:new ()
 	return o
 end
 
-function Heightmap_modeler:init(heightmap)
-	self.heightmap = heightmap
+function Heightmap_modeler:init()
 	self.curve = {-1, -.7, 0, .3, 0}
 	self.radius = 10
 end

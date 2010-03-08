@@ -9,7 +9,7 @@ end
 
 function Painter_interface:init ()
 	self.heightmap_painter = Heightmap_painter:new ()
-	self.heightmap_painter:init(heightmap)
+	self.heightmap_painter:init()
 
 	wrect = Rect:new ()
 	wrect:init(0, 0, width, height)

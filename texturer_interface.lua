@@ -15,7 +15,7 @@ function Texturer_interface:init ()
 
 
 	self.heightmap_texturer = Heightmap_texturer:new ()
-	self.heightmap_texturer:init(heightmap)
+	self.heightmap_texturer:init()
 
 	wrect = Rect:new ()
 	wrect:init(0, 128, width, height)

@@ -7,8 +7,7 @@ function Heightmap_texturer:new ()
 	return o
 end
 
-function Heightmap_texturer:init(heightmap)
-	self.heightmap = heightmap
+function Heightmap_texturer:init()
 	self.opacity = 1
 	self.current_texture = 1
 	self.radius = 10
@@ -52,9 +51,9 @@ function Heightmap_texturer:update(dt)
 		oglpoint = camera:unproject(mouse_x, mouse_y)
 		alledge_lua.pop_view()
 
-		map_sx = self.heightmap:get_size_x()
-		map_sz = self.heightmap:get_size_z()
-		map_tilesize = self.heightmap:get_tilesize()
+		map_sx = heightmap:get_size_x()
+		map_sz = heightmap:get_size_z()
+		map_tilesize = heightmap:get_tilesize()
 		
 		scale_x = splat_texture:get_width() / (map_sx-1) * map_tilesize
 		scale_z = splat_texture:get_height() / (map_sz-1) * map_tilesize
