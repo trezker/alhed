@@ -95,14 +95,7 @@ ground_texture = alledge_lua.bitmap.new()
 ground_texture:load("data/ground.png");
 
 textures = {}
---[[
-textures[1] = alledge_lua.bitmap.new()
-textures[1]:load("data/darwinian.png");
-textures[2] = alledge_lua.bitmap.new()
-textures[2]:load("data/Colormap.png");
-textures[3] = alledge_lua.bitmap.new()
-textures[3]:load("data/grass.png");
---]]
+
 splat_texture = alledge_lua.bitmap.new()
 splat_texture:load("data/splat_texture.png");
 
@@ -110,19 +103,26 @@ if not splat_texture then
 	print("Splat texture missing")
 end
 
-heightmap = alledge_lua.heightmap.new()
-heightmap:set_texture_scale(.2)
-heightmap:set_tilesize(1)
-heightmap:resize(50, 30)
-heightmap:set_ground_texture(ground_texture)
-heightmap:set_ground_texture_filename("data/ground.png")
-heightmap:set_splat_texture(splat_texture)
-for i = 1, 4 do
-	if textures[i] then
-		heightmap:set_texture(textures[i], i-1)
-	end
+new_heightmap_settings = {
+	texture_scale = .2,
+	tilesize = 1,
+	size_x = 50,
+	size_z = 30,
+	ground_filename = "data/ground.png"
+}
+
+new_heightmap = function ()
+	heightmap = alledge_lua.heightmap.new()
+	heightmap:set_texture_scale(new_heightmap_settings.texture_scale)
+	heightmap:set_tilesize(new_heightmap_settings.tilesize)
+	heightmap:resize(new_heightmap_settings.size_x, new_heightmap_settings.size_z)
+	heightmap:set_ground_texture(ground_texture)
+	heightmap:set_ground_texture_filename(new_heightmap_settings.ground_filename)
+	heightmap:set_splat_texture(splat_texture)
+	alledge_lua.scenenode.attach_node(transform, heightmap)
 end
-alledge_lua.scenenode.attach_node(transform, heightmap)
+
+new_heightmap()
 
 camera_controller = Camera_controller:new ()
 camera_controller:init(camera)
