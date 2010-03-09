@@ -113,6 +113,9 @@ new_heightmap_settings = {
 }
 
 new_heightmap = function ()
+	if heightmap then
+		alledge_lua.scenenode.detach_node(transform, heightmap)
+	end
 	heightmap = alledge_lua.heightmap.new()
 	heightmap:set_texture_scale(new_heightmap_settings.texture_scale)
 	heightmap:set_tilesize(new_heightmap_settings.tilesize)

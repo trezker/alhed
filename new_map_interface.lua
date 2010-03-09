@@ -21,6 +21,15 @@ function New_map_interface:init ()
 	self.cancel.widget = Widget:new()
 	self.cancel.widget:init(wrect, self.cancel.button)
 	self.top_widget:add_child(self.cancel.widget)
+
+	wrect = Rect:new ()
+	wrect:init(400, 284, 464, 300)
+	self.create = {}
+	self.create.button = Button:new ()
+	self.create.button:init(wrect, "Create", self.create_cb, self)
+	self.create.widget = Widget:new()
+	self.create.widget:init(wrect, self.create.button)
+	self.top_widget:add_child(self.create.widget)
 end
 
 function New_map_interface:open ()
@@ -28,5 +37,10 @@ function New_map_interface:open ()
 end
 
 function New_map_interface:cancel_cb ()
+	gui_root:remove_child(self.top_widget)
+end
+
+function New_map_interface:create_cb ()
+	new_heightmap ()
 	gui_root:remove_child(self.top_widget)
 end
