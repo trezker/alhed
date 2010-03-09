@@ -17,6 +17,7 @@ dofile('heightmap_painter.lua')
 dofile('modeler_interface.lua')
 dofile('texturer_interface.lua')
 dofile('painter_interface.lua')
+dofile('new_map_interface.lua')
 
 fov = 45
 near = 1
@@ -143,6 +144,7 @@ edit_modes = {
 }
 edit_mode = 1
 
+
 wrect = Rect:new ()
 wrect:init(0, 0, width, height)
 gui_root = Widget:new()
@@ -170,6 +172,16 @@ load_heightmap_button:init(wrect, "Load", load_heightmap)
 load_heightmap_widget = Widget:new()
 load_heightmap_widget:init(wrect, load_heightmap_button)
 gui_root:add_child(load_heightmap_widget)
+
+new_map_interface = New_map_interface:new ()
+new_map_interface:init()
+wrect = Rect:new ()
+wrect:init(192, 0, 256, 32)
+new_heightmap_button = Button:new ()
+new_heightmap_button:init(wrect, "New", new_map_interface.open, new_map_interface)
+new_heightmap_widget = Widget:new()
+new_heightmap_widget:init(wrect, new_heightmap_button)
+gui_root:add_child(new_heightmap_widget)
 
 
 last_time = allegro5.current_time()
