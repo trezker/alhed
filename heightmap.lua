@@ -105,7 +105,7 @@ if not splat_texture then
 end
 
 new_heightmap_settings = {
-	texture_scale = .2,
+	texture_scale = .2, --texture tiling per model tile
 	tilesize = 1,
 	size_x = 50,
 	size_z = 30,
