@@ -49,6 +49,15 @@ function New_map_interface:init ()
 	self.sizez_spinner_widget:init(wrect, self.sizez_spinner)
 	self.top_widget:add_child(self.sizez_spinner_widget)
 
+	wrect = Rect:new ()
+	wrect:init(300, 232, 364, 248)
+	self.tilesize_spinner = Spinner:new()
+	self.tilesize_spinner:init(wrect, self.tilesize_spinner_callback, self)
+	self.tilesize_spinner.value = 10
+	self.tilesize_spinner_widget = Widget:new()
+	self.tilesize_spinner_widget:init(wrect, self.tilesize_spinner)
+	self.top_widget:add_child(self.tilesize_spinner_widget)
+
 end
 
 function New_map_interface:open ()
@@ -80,5 +89,14 @@ function New_map_interface:sizez_spinner_callback ()
 	else
 		new_heightmap_settings.size_z = 2
 		self.sizez_spinner.value = 2
+	end
+end
+
+function New_map_interface:tilesize_spinner_callback ()
+	if self.tilesize_spinner.value > 0 then
+		new_heightmap_settings.tilesize = self.tilesize_spinner.value
+	else
+		new_heightmap_settings.tilesize = 1
+		self.tilesize_spinner.value = 1
 	end
 end
