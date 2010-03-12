@@ -17,6 +17,7 @@ function Widget:init(rect, object)
 	if object then
 		self.components[object] = true
 		self.num_components = 1
+		object.brect = self.brect
 	end
 	self.children_lit = {}  --Last in top, for event passing in overlapping objects
 	self.children_lib = {}	--Last in bottom, for rendering bottom to top
@@ -26,6 +27,7 @@ function Widget:add_component(object)
 	if object then
 		self.components[object] = true
 		self.num_components = self.num_components + 1
+		object.brect = self.brect
 	end
 end
 

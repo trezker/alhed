@@ -7,8 +7,7 @@ function Curve_editor:new ()
 	return o
 end
 
-function Curve_editor:init(rect)
-	self.brect = rect
+function Curve_editor:init()
 	self.curve = {-1, -.7, 0, .3, 0}
 	self.selected = 1
 end

@@ -7,8 +7,7 @@ function Button:new ()
 	return o
 end
 
-function Button:init(rect, text, callback, cbobject, cbdata)
-	self.brect = rect
+function Button:init(text, callback, cbobject, cbdata)
 	self.text = text
 	self.callback = callback
 	self.cbobject = cbobject
