@@ -29,10 +29,8 @@ function Texturer_interface:init ()
 	wrect = Rect:new ()
 	wrect:init(0, 32, 64, 64)
 	self.load_texture_button = Button:new ()
-	self.load_texture_button:init("Load", self.load_texture, self)
-	self.load_texture_widget = Widget:new()
-	self.load_texture_widget:init(wrect, self.load_texture_button)
-	self.top_widget:add_child(self.load_texture_widget)
+	self.load_texture_button:init(wrect, "Load", self.load_texture, self)
+	self.top_widget:add_child(self.load_texture_button)
 
 	self.texture_selectors = {}
 	for i = 1, 4 do
@@ -40,22 +38,18 @@ function Texturer_interface:init ()
 		wrect:init(i*64, 32, i*64+64, 92)
 		self.texture_selectors[i] = {}
 		self.texture_selectors[i].button = Button:new ()
-		self.texture_selectors[i].button:init("", self.select_texture, self, i)
+		self.texture_selectors[i].button:init(wrect, "", self.select_texture, self, i)
 		self.texture_selectors[i].button.image = textures[i]
-		self.texture_selectors[i].widget = Widget:new()
-		self.texture_selectors[i].widget:init(wrect, self.texture_selectors[i].button)
-		self.top_widget:add_child(self.texture_selectors[i].widget)
+		self.top_widget:add_child(self.texture_selectors[i].button)
 	end
 	self.texture_selectors[1].button.text = "Active"
 
 	wrect = Rect:new ()
 	wrect:init(0, 64, 64, 92)
 	self.radius_spinner = Spinner:new()
-	self.radius_spinner:init(self.radius_spinner_callback, self)
+	self.radius_spinner:init(wrect, self.radius_spinner_callback, self)
 	self.radius_spinner.value = 10
-	self.radius_spinner_widget = Widget:new()
-	self.radius_spinner_widget:init(wrect, self.radius_spinner)
-	self.top_widget:add_child(self.radius_spinner_widget)
+	self.top_widget:add_child(self.radius_spinner)
 
 	return self.top_widget
 end

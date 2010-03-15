@@ -7,7 +7,8 @@ function Spinner:new ()
 	return o
 end
 
-function Spinner:init(callback, cbobject)
+function Spinner:init(rect, callback, cbobject)
+	self.brect = rect
 	self.value = value
 	self.callback = callback
 	self.cbobject = cbobject

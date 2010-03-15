@@ -1,3 +1,6 @@
+dofile('widget_vbox.lua')
+dofile('widget_hbox.lua')
+
 mouse_x = 0
 mouse_y = 0
 

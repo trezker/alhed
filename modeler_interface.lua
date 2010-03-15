@@ -21,19 +21,15 @@ function Modeler_interface:init ()
 	wrect:init(0, height-100, 100, height)
 	self.curve_editor = Curve_editor:new()
 	self.curve_editor:init(wrect)
-	self.curve_editor_widget = Widget:new()
-	self.curve_editor_widget:init(wrect, self.curve_editor)
 	self.heightmap_modeler:set_curve(self.curve_editor.curve)
-	self.modeler_widget:add_child(self.curve_editor_widget)
+	self.modeler_widget:add_child(self.curve_editor)
 
 	wrect = Rect:new ()
 	wrect:init(0, 50, 50, 70)
 	self.radius_spinner = Spinner:new()
 	self.radius_spinner:init(wrect, self.radius_spinner_callback, self)
 	self.radius_spinner.value = 10
-	self.radius_spinner_widget = Widget:new()
-	self.radius_spinner_widget:init(wrect, self.radius_spinner)
-	self.modeler_widget:add_child(self.radius_spinner_widget)
+	self.modeler_widget:add_child(self.radius_spinner)
 
 	return self.modeler_widget
 end

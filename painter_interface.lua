@@ -46,26 +46,20 @@ function Painter_interface:init ()
 	wrect:init(64+self.sat_val_bitmap:get_width(), 32, 64+self.sat_val_bitmap:get_width() + self.hue_bitmap:get_width(), 32+self.hue_bitmap:get_height())
 	self.hue = Hue:new()
 	self.hue:init(wrect, self.hue_bitmap, self.update_color, self)
-	self.hue_widget = Widget:new()
-	self.hue_widget:init(wrect, self.hue)
-	self.painter_widget:add_child(self.hue_widget)
+	self.painter_widget:add_child(self.hue)
 
 	
 	wrect = Rect:new ()
 	wrect:init(64, 32, 64 + self.sat_val_bitmap:get_width(), 32+self.sat_val_bitmap:get_height())
 	self.sat_val = Sat_val:new()
 	self.sat_val:init(wrect, self.sat_val_bitmap, self.update_color, self)
-	self.sat_val_widget = Widget:new()
-	self.sat_val_widget:init(wrect, self.sat_val)
-	self.painter_widget:add_child(self.sat_val_widget)
+	self.painter_widget:add_child(self.sat_val)
 
 	wrect = Rect:new ()
 	wrect:init(300, 32, 350, 64)
 	self.color_field = Color_field:new()
 	self.color_field:init(wrect)
-	self.color_field_widget = Widget:new()
-	self.color_field_widget:init(wrect, self.color_field)
-	self.painter_widget:add_child(self.color_field_widget)
+	self.painter_widget:add_child(self.color_field)
 
 
 	wrect = Rect:new ()
@@ -73,9 +67,7 @@ function Painter_interface:init ()
 	self.radius_spinner = Spinner:new()
 	self.radius_spinner:init(wrect, self.radius_spinner_callback, self)
 	self.radius_spinner.value = 5
-	self.radius_spinner_widget = Widget:new()
-	self.radius_spinner_widget:init(wrect, self.radius_spinner)
-	self.painter_widget:add_child(self.radius_spinner_widget)
+	self.painter_widget:add_child(self.radius_spinner)
 
 	return self.painter_widget
 end

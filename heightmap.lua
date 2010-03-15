@@ -11,6 +11,7 @@ dofile('heightmap_modeler.lua')
 dofile('camera_controller.lua')
 dofile('curve_editor.lua')
 dofile('button.lua')
+dofile('label.lua')
 dofile('spinner.lua')
 dofile('heightmap_texturer.lua')
 dofile('heightmap_painter.lua')
@@ -24,6 +25,10 @@ near = 1
 far = 1000
 width = 640
 height = 480
+
+mouse_x = 0
+mouse_y = 0
+
 
 allegro5.init()
 allegro5.keyboard.install()
@@ -163,28 +168,22 @@ gui_root:add_child(edit_mode_widget)
 wrect = Rect:new ()
 wrect:init(64, 0, 128, 32)
 save_heightmap_button = Button:new ()
-save_heightmap_button:init("Save", save_heightmap)
-save_heightmap_widget = Widget:new()
-save_heightmap_widget:init(wrect, save_heightmap_button)
-gui_root:add_child(save_heightmap_widget)
+save_heightmap_button:init(wrect, "Save", save_heightmap)
+gui_root:add_child(save_heightmap_button)
 
 wrect = Rect:new ()
 wrect:init(128, 0, 192, 32)
 load_heightmap_button = Button:new ()
-load_heightmap_button:init("Load", load_heightmap)
-load_heightmap_widget = Widget:new()
-load_heightmap_widget:init(wrect, load_heightmap_button)
-gui_root:add_child(load_heightmap_widget)
+load_heightmap_button:init(wrect, "Load", load_heightmap)
+gui_root:add_child(load_heightmap_button)
 
 new_map_interface = New_map_interface:new ()
 new_map_interface:init()
 wrect = Rect:new ()
 wrect:init(192, 0, 256, 32)
 new_heightmap_button = Button:new ()
-new_heightmap_button:init("New", new_map_interface.open, new_map_interface)
-new_heightmap_widget = Widget:new()
-new_heightmap_widget:init(wrect, new_heightmap_button)
-gui_root:add_child(new_heightmap_widget)
+new_heightmap_button:init(wrect, "New", new_map_interface.open, new_map_interface)
+gui_root:add_child(new_heightmap_button)
 
 
 last_time = allegro5.current_time()
