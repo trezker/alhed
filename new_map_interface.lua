@@ -9,11 +9,6 @@ end
 
 function New_map_interface:init ()
 	wrect = Rect:new ()
-	wrect:init(width/2-100, height/2-50, width/2+100, height/2+50)
-	self.top_widget = Widget_vbox:new()
-	self.top_widget:init(wrect)
-
-	wrect = Rect:new ()
 	wrect:init(0, 0, 64, 16)
 	self.cancel = {}
 	self.cancel.button = Button:new ()
@@ -43,12 +38,39 @@ function New_map_interface:init ()
 	self.tilesize_spinner:init(wrect, self.tilesize_spinner_callback, self)
 	self.tilesize_spinner.value = 10
 
+	self.sizex = {}
+	wrect = Rect:new ()
+	wrect:init(0, 0, 64, 16)
+	self.sizex.label = Label:new ()
+	self.sizex.label:init(wrect, "Size x")
 
-	self.top_widget:add_child(self.sizex_spinner)
-	self.top_widget:add_child(self.sizez_spinner)
-	self.top_widget:add_child(self.tilesize_spinner)
-	self.top_widget:add_child(self.create.button)
-	self.top_widget:add_child(self.cancel.button)
+
+	--Layout
+	wrect = Rect:new ()
+	wrect:init(width/2-100, height/2-50, width/2+100, height/2+50)
+	self.top_widget = Widget_hbox:new()
+	self.top_widget:init(wrect)
+
+	wrect = Rect:new ()
+	wrect:init(0, 0, 100, 100)
+	self.labels_box = Widget_vbox:new()
+	self.labels_box:init(wrect)
+
+	wrect = Rect:new ()
+	wrect:init(0, 0, 100, 100)
+	self.controls_box = Widget_vbox:new()
+	self.controls_box:init(wrect)
+
+	self.top_widget:add_child(self.labels_box)
+	self.top_widget:add_child(self.controls_box)
+
+	self.controls_box:add_child(self.sizex_spinner)
+	self.controls_box:add_child(self.sizez_spinner)
+	self.controls_box:add_child(self.tilesize_spinner)
+	self.labels_box:add_child(self.create.button)
+	self.labels_box:add_child(self.cancel.button)
+	
+	print(self.labels_box.brect.y1)
 end
 
 function New_map_interface:open ()
