@@ -20,6 +20,33 @@ function Widget_hbox:init(rect, object)
 	self.current_x = self.brect.x1
 end
 
+function Widget_hbox:move(rect)
+	self.brect.x1 = rect.x1
+	self.brect.x2 = rect.x2
+	self.brect.y1 = rect.y1
+	self.brect.y2 = rect.y2
+
+	self.current_x = self.brect.x1
+	for i, widget in ipairs(self.children) do
+		w = widget.brect.x2 - widget.brect.x1
+		if widget.move then
+			rect = Rect:new ()
+			rect.x1 = self.current_x
+			self.current_x = self.current_x + w
+			rect.x2 = self.current_x
+			rect.y1 = self.brect.y1
+			rect.y2 = self.brect.y2
+			widget:move(rect)
+		else
+			widget.brect.x1 = self.current_x
+			self.current_x = self.current_x + w
+			widget.brect.x2 = self.current_x
+			widget.brect.y1 = self.brect.y1
+			widget.brect.y2 = self.brect.y2
+		end
+	end
+end
+
 function Widget_hbox:add_component(object)
 	if object then
 		self.components[object] = true

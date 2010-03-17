@@ -25,7 +25,26 @@ function Widget_vbox:move(rect)
 	self.brect.x2 = rect.x2
 	self.brect.y1 = rect.y1
 	self.brect.y2 = rect.y2
+
 	self.current_y = self.brect.y1
+	for i, widget in ipairs(self.children) do
+		h = widget.brect.y2 - widget.brect.y1
+		if widget.move then
+			rect = Rect:new ()
+			rect.y1 = self.current_y
+			self.current_y = self.current_y + h
+			rect.y2 = self.current_y
+			rect.x1 = self.brect.x1
+			rect.x2 = self.brect.x2
+			widget:move(rect)
+		else
+			widget.brect.y1 = self.current_y
+			self.current_y = self.current_y + h
+			widget.brect.y2 = self.current_y
+			widget.brect.x1 = self.brect.x1
+			widget.brect.x2 = self.brect.x2
+		end
+	end
 end
 
 function Widget_vbox:add_component(object)
@@ -47,11 +66,21 @@ function Widget_vbox:add_child(widget)
 	table.insert(self.children, widget)
 	--query widget height, place in order, resize width...
 	h = widget.brect.y2 - widget.brect.y1
-	widget.brect.y1 = self.current_y
-	self.current_y = self.current_y + h
-	widget.brect.y2 = self.current_y
-	widget.brect.x1 = self.brect.x1
-	widget.brect.x2 = self.brect.x2
+	if widget.move then
+		rect = Rect:new ()
+		rect.y1 = self.current_y
+		self.current_y = self.current_y + h
+		rect.y2 = self.current_y
+		rect.x1 = self.brect.x1
+		rect.x2 = self.brect.x2
+		widget:move(rect)
+	else
+		widget.brect.y1 = self.current_y
+		self.current_y = self.current_y + h
+		widget.brect.y2 = self.current_y
+		widget.brect.x1 = self.brect.x1
+		widget.brect.x2 = self.brect.x2
+	end
 end
 
 function Widget_vbox:remove_child(widget)
