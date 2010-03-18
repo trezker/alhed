@@ -38,12 +38,20 @@ function New_map_interface:init ()
 	self.tilesize_spinner:init(wrect, self.tilesize_spinner_callback, self)
 	self.tilesize_spinner.value = 10
 
-	self.sizex = {}
 	wrect = Rect:new ()
 	wrect:init(0, 0, 64, 16)
-	self.sizex.label = Label:new ()
-	self.sizex.label:init(wrect, "Size x")
+	self.sizex_label = Label:new ()
+	self.sizex_label:init(wrect, "Size x")
 
+	wrect = Rect:new ()
+	wrect:init(0, 0, 64, 16)
+	self.sizez_label = Label:new ()
+	self.sizez_label:init(wrect, "Size z")
+
+	wrect = Rect:new ()
+	wrect:init(0, 0, 64, 16)
+	self.tilesize_label = Label:new ()
+	self.tilesize_label:init(wrect, "Tilesize")
 
 	--Layout
 	wrect = Rect:new ()
@@ -77,9 +85,14 @@ function New_map_interface:init ()
 	self.settings_box:add_child(self.labels_box)
 	self.settings_box:add_child(self.controls_box)
 
+	self.labels_box:add_child(self.sizex_label)
+	self.labels_box:add_child(self.sizez_label)
+	self.labels_box:add_child(self.tilesize_label)
+
 	self.controls_box:add_child(self.sizex_spinner)
 	self.controls_box:add_child(self.sizez_spinner)
 	self.controls_box:add_child(self.tilesize_spinner)
+
 	self.buttons_box:add_child(self.create.button)
 	self.buttons_box:add_child(self.cancel.button)
 	

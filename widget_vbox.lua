@@ -102,7 +102,7 @@ end
 function Widget_vbox:event(event)
 	for i,v in ipairs(self.children) do
 		if not (mouse_x < v.brect.x1 or mouse_x > v.brect.x2 or mouse_y < v.brect.y1 or mouse_y > v.brect.y2) then
-			if v:event(event) then
+			if v.event and v:event(event) then
 				return true
 			end
 		end
