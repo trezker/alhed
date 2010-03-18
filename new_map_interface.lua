@@ -48,8 +48,18 @@ function New_map_interface:init ()
 	--Layout
 	wrect = Rect:new ()
 	wrect:init(width/2-100, height/2-50, width/2+100, height/2+50)
-	self.top_widget = Widget_hbox:new()
+	self.top_widget = Widget_vbox:new()
 	self.top_widget:init(wrect)
+
+	wrect = Rect:new ()
+	wrect:init(0, 0, 200, 100-16)
+	self.settings_box = Widget_hbox:new()
+	self.settings_box:init(wrect)
+
+	wrect = Rect:new ()
+	wrect:init(0, 0, 200, 16)
+	self.buttons_box = Widget_hbox:new()
+	self.buttons_box:init(wrect)
 
 	wrect = Rect:new ()
 	wrect:init(0, 0, 100, 100)
@@ -61,14 +71,17 @@ function New_map_interface:init ()
 	self.controls_box = Widget_vbox:new()
 	self.controls_box:init(wrect)
 
-	self.top_widget:add_child(self.labels_box)
-	self.top_widget:add_child(self.controls_box)
+	self.top_widget:add_child(self.settings_box)
+	self.top_widget:add_child(self.buttons_box)
+
+	self.settings_box:add_child(self.labels_box)
+	self.settings_box:add_child(self.controls_box)
 
 	self.controls_box:add_child(self.sizex_spinner)
 	self.controls_box:add_child(self.sizez_spinner)
 	self.controls_box:add_child(self.tilesize_spinner)
-	self.labels_box:add_child(self.create.button)
-	self.labels_box:add_child(self.cancel.button)
+	self.buttons_box:add_child(self.create.button)
+	self.buttons_box:add_child(self.cancel.button)
 	
 	print(self.labels_box.brect.y1)
 end
