@@ -15,3 +15,10 @@ function Rect:init(x1, y1, x2, y2)
 	self.x2 = x2
 	self.y2 = y2
 end
+
+function Rect:covers(x, y)
+	if not (x < self.x1 or x > self.x2 or y < self.y1 or y > self.y2) then
+		return true
+	end
+	return false
+end

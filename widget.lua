@@ -63,7 +63,7 @@ end
 
 function Widget:event(event)
 	for i,v in ipairs(self.children_lit) do
-		if not (mouse_x < v.brect.x1 or mouse_x > v.brect.x2 or mouse_y < v.brect.y1 or mouse_y > v.brect.y2) then
+		if v.brect:covers(mouse_x, mouse_y) then
 			if v:event(event) then
 				return true
 			end

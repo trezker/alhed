@@ -26,7 +26,7 @@ function Button:event(event)
 		if event.button == 1 and self.lmb == true then
 			self.lmb = false
 			unsubscribe_from_event (allegro5.mouse.EVENT_UP, self.event, self)
-			if not (mouse_x < self.brect.x1 or mouse_x > self.brect.x2 or mouse_y < self.brect.y1 or mouse_y > self.brect.y2) then
+			if self.brect:covers(mouse_x, mouse_y) then
 				if self.cbobject then
 					self.callback(self.cbobject, self.cbdata)
 				else
