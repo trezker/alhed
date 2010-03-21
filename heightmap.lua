@@ -101,14 +101,14 @@ ground_texture = alledge_lua.bitmap.new()
 ground_texture:load("data/ground.png");
 
 textures = {}
-
+--[[
 splat_texture = alledge_lua.bitmap.new()
 splat_texture:load("data/splat_texture.png");
 
 if not splat_texture then
 	print("Splat texture missing")
 end
-
+--]]
 new_heightmap_settings = {
 	texture_scale = .2, --texture tiling per model tile
 	tilesize = 1,
@@ -127,7 +127,8 @@ new_heightmap = function ()
 	heightmap:resize(new_heightmap_settings.size_x, new_heightmap_settings.size_z)
 	heightmap:set_ground_texture(ground_texture)
 	heightmap:set_ground_texture_filename(new_heightmap_settings.ground_filename)
-	heightmap:set_splat_texture(splat_texture)
+--	heightmap:set_splat_texture(splat_texture)
+	splat_texture = heightmap:get_splat_texture()
 	alledge_lua.scenenode.attach_node(transform, heightmap)
 end
 
