@@ -19,6 +19,7 @@ dofile('modeler_interface.lua')
 dofile('texturer_interface.lua')
 dofile('painter_interface.lua')
 dofile('new_map_interface.lua')
+dofile('objects_interface.lua')
 
 fov = 45
 near = 1
@@ -71,6 +72,26 @@ line_node:set_line(line_start, line_end)
 line_node:set_color(1, 1, 1, 1)
 alledge_lua.scenenode.attach_node(transform, line_node);
 --]]
+
+object_models = {}
+
+handgun_model = alledge_lua.static_model.new()
+handgun_model:load_model("data/handgun.tmf")
+handgun_texture = alledge_lua.bitmap.new()
+b = handgun_texture:load("data/handgun.png")
+handgun_model:set_texture(handgun_texture)
+
+om = {}
+om.model = handgun_model
+om.model_node = alledge_lua.static_model_node.new()
+om.model_node:set_model(om.model)
+om.interface_transform = alledge_lua.transformnode.new()
+om.interface_transform:set_position(alledge_lua.vector3.new(-0.75, 0, -3))
+om.interface_transform:set_rotation(alledge_lua.vector3.new(0, -90, 0))
+alledge_lua.scenenode.attach_node(om.interface_transform, om.model_node);
+table.insert(object_models, om)
+
+
 
 function save_heightmap ()
 	native_dialog = allegro5.native_dialog.create ("", "save", "*.*", 0)
@@ -146,10 +167,14 @@ texturer_widget = texturer_interface:init ()
 painter_interface = Painter_interface:new ()
 painter_widget = painter_interface:init ()
 
+objects_interface = Objects_interface:new ()
+objects_widget = objects_interface:init (object_models)
+
 edit_modes = {
 	{name = "Model", widget = modeler_widget},
 	{name = "Texture", widget = texturer_widget},
-	{name = "Color", widget = painter_widget}
+	{name = "Color", widget = painter_widget},
+	{name = "Objects", widget = objects_widget}
 }
 edit_mode = 1
 
@@ -191,6 +216,10 @@ last_time = allegro5.current_time()
 
 b = false
 
+full_viewport = {}
+full_viewport.x, full_viewport.y, full_viewport.w, full_viewport.h = alledge_lua.gl.get(alledge_lua.gl.VIEWPORT)
+
+
 while not quit do
 	current_time = allegro5.current_time()
 	dt = current_time - last_time
@@ -215,6 +244,12 @@ while not quit do
 		end
 		if event.keycode == allegro5.keyboard.KEY_LCTRL then
 			ctrl = true
+		end
+		if event.keycode == allegro5.keyboard.KEY_F5 then
+			alledge_lua.gl.set_viewport(100, 200, 300, 150)
+		end
+		if event.keycode == allegro5.keyboard.KEY_F6 then
+			alledge_lua.gl.set_viewport(full_viewport.x, full_viewport.y, full_viewport.w, full_viewport.h)
 		end
 	end
 
@@ -250,12 +285,24 @@ while not quit do
 	alledge_lua.gl.disable(alledge_lua.gl.DEPTH_TEST)
 	alledge_lua.pop_view()
 
+-- [[
+	alledge_lua.init_perspective_view(fov, width/height, near, far)
+	alledge_lua.gl.set_viewport(10, 300, 100, 100)
+	temp_root = alledge_lua.scenenode.new()
+	alledge_lua.scenenode.attach_node(temp_root, om.interface_transform)
+	temp_root:apply()
+	alledge_lua.gl.set_viewport(full_viewport.x, full_viewport.y, full_viewport.w, full_viewport.h)
+	alledge_lua.pop_view()
+--]]
 	gui_root:render()
 
 	allegro5.primitives.draw_filled_rectangle(0, 0, 64, 32, allegro5.color.map_rgb(255, 0, 0))
 	font:draw_text (0, 0, 0, "Edit")
 	font:draw_text (0, 16, 0, edit_modes[edit_mode].name)
 
+	--Todo: Make a little viewport for it?
+--	alledge_lua.scenenode.apply(om.interface_transform)
+--	alledge_lua.scenenode.apply(om.interface_transform)
 --[[
 	for i = 1, 4 do
 		if textures[i] then
