@@ -63,18 +63,10 @@ alledge_lua.scenenode.attach_node(camera, light)
 
 transform = alledge_lua.transformnode.new()
 alledge_lua.scenenode.attach_node(light, transform)
+
+master_objects = {}
+master_objects_next_id = 1
 --[[
-line_start = alledge_lua.vector3.new(-1, -1, 1);
-line_end = alledge_lua.vector3.new(1, -1, 1);
-
-line_node = alledge_lua.linenode.new()
-line_node:set_line(line_start, line_end)
-line_node:set_color(1, 1, 1, 1)
-alledge_lua.scenenode.attach_node(transform, line_node);
---]]
-
-object_models = {}
-
 handgun_model = alledge_lua.static_model.new()
 handgun_model:load_model("data/handgun.tmf")
 handgun_texture = alledge_lua.bitmap.new()
@@ -90,7 +82,7 @@ om.interface_transform:set_position(alledge_lua.vector3.new(-0.75, 0, -3))
 om.interface_transform:set_rotation(alledge_lua.vector3.new(0, -90, 0))
 alledge_lua.scenenode.attach_node(om.interface_transform, om.model_node);
 table.insert(object_models, om)
-
+--]]
 
 
 function save_heightmap ()
@@ -122,14 +114,7 @@ ground_texture = alledge_lua.bitmap.new()
 ground_texture:load("data/ground.png");
 
 textures = {}
---[[
-splat_texture = alledge_lua.bitmap.new()
-splat_texture:load("data/splat_texture.png");
 
-if not splat_texture then
-	print("Splat texture missing")
-end
---]]
 new_heightmap_settings = {
 	texture_scale = .2, --texture tiling per model tile
 	tilesize = 1,
@@ -148,7 +133,6 @@ new_heightmap = function ()
 	heightmap:resize(new_heightmap_settings.size_x, new_heightmap_settings.size_z)
 	heightmap:set_ground_texture(ground_texture)
 	heightmap:set_ground_texture_filename(new_heightmap_settings.ground_filename)
---	heightmap:set_splat_texture(splat_texture)
 	splat_texture = heightmap:get_splat_texture()
 	alledge_lua.scenenode.attach_node(transform, heightmap)
 end
@@ -168,7 +152,7 @@ painter_interface = Painter_interface:new ()
 painter_widget = painter_interface:init ()
 
 objects_interface = Objects_interface:new ()
-objects_widget = objects_interface:init (object_models)
+objects_widget = objects_interface:init ()
 
 edit_modes = {
 	{name = "Model", widget = modeler_widget},
@@ -273,6 +257,7 @@ while not quit do
 	modeler_interface.heightmap_modeler:update(dt)
 	texturer_interface.heightmap_texturer:update(dt)
 	painter_interface.heightmap_painter:update(dt)
+	objects_interface.objects_editor:update(dt)
 
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
 	alledge_lua.gl.enable(alledge_lua.gl.DEPTH_TEST)
@@ -285,32 +270,12 @@ while not quit do
 	alledge_lua.gl.disable(alledge_lua.gl.DEPTH_TEST)
 	alledge_lua.pop_view()
 
--- [[
-	alledge_lua.init_perspective_view(fov, width/height, near, far)
-	alledge_lua.gl.set_viewport(10, 300, 100, 100)
-	temp_root = alledge_lua.scenenode.new()
-	alledge_lua.scenenode.attach_node(temp_root, om.interface_transform)
-	temp_root:apply()
-	alledge_lua.gl.set_viewport(full_viewport.x, full_viewport.y, full_viewport.w, full_viewport.h)
-	alledge_lua.pop_view()
---]]
 	gui_root:render()
 
 	allegro5.primitives.draw_filled_rectangle(0, 0, 64, 32, allegro5.color.map_rgb(255, 0, 0))
 	font:draw_text (0, 0, 0, "Edit")
 	font:draw_text (0, 16, 0, edit_modes[edit_mode].name)
 
-	--Todo: Make a little viewport for it?
---	alledge_lua.scenenode.apply(om.interface_transform)
---	alledge_lua.scenenode.apply(om.interface_transform)
---[[
-	for i = 1, 4 do
-		if textures[i] then
-			textures[i]:draw_scaled(i*64, 0, 64, 64, 0)
---			heightmap:set_texture(textures[i], i-1);
-		end
-	end
---]]
 	allegro5.display.flip()
 	allegro5.bitmap.clear_to_color (allegro5.color.map_rgba(0, 0, 0, 0))
 	allegro5.rest(0.001)

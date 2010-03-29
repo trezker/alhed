@@ -12,7 +12,8 @@ function Object_selector:init(rect, objects, callback, cbobject)
 	self.objects = objects or {}
 	self.callback = callback
 	self.cbobject = cbobject
-	self.selected_object = 0
+	self.selected_slot = 0
+	self.object_offset = 1
 end
 
 function Object_selector:event(event)
@@ -20,6 +21,9 @@ function Object_selector:event(event)
 		if event.button == 1 then
 			self.lmb = true
 			subscribe_to_event (allegro5.mouse.EVENT_UP, self.event, self)
+			x = mouse_x - self.brect.x1
+			vp_w = w / 5
+			self.hover_slot = math.floor(x/vp_w)
 		end
 	end
 	if event.type == allegro5.mouse.EVENT_UP then
@@ -29,12 +33,12 @@ function Object_selector:event(event)
 			if self.brect:covers(mouse_x, mouse_y) then
 				x = mouse_x - self.brect.x1
 				vp_w = w / 5
-				obj_n = x/vp_w
-				self.selected_object = obj_n
+				obj_n = math.floor(x/vp_w)
+				self.selected_slot = obj_n
 				if self.cbobject then
-					self.callback(self.cbobject, self.selected_object)
+					self.callback(self.cbobject, self.selected_slot + self.object_offset)
 				else
-					self.callback(self.selected_object)
+					self.callback(self.selected_slot + self.object_offset)
 				end
 			end
 		end
@@ -59,16 +63,17 @@ function Object_selector:render()
 		end
 		alledge_lua.gl.set_viewport(self.brect.x1 + (i-1) * vp_w, vp_y, vp_w, h)
 		temp_root = alledge_lua.scenenode.new()
-		alledge_lua.scenenode.attach_node(temp_root, self.objects[i].interface_transform)
+		alledge_lua.scenenode.attach_node(temp_root, master_objects[self.objects[i]].interface_transform)
 		temp_root:apply()
 	end
 	alledge_lua.gl.set_viewport(full_viewport.x, full_viewport.y, full_viewport.w, full_viewport.h)
 	alledge_lua.pop_view()
---[[
+
 	if self.lmb then
-		allegro5.primitives.draw_rectangle(self.brect.x1, self.brect.y1, self.brect.x2, self.brect.y2, allegro5.color.map_rgba_f(0, 0, 0, 0.5), 2)
+		slot_start = self.brect.x1 + self.hover_slot*vp_w
+		allegro5.primitives.draw_rectangle(slot_start, self.brect.y1, slot_start+vp_w, self.brect.y2, allegro5.color.map_rgba_f(0, 0, 0, 0.5), 2)
 	else
-		allegro5.primitives.draw_rectangle(self.brect.x1, self.brect.y1, self.brect.x2, self.brect.y2, allegro5.color.map_rgba_f(1, 1, 1, 0.5), 2)
+		slot_start = self.brect.x1 + self.selected_slot*vp_w
+		allegro5.primitives.draw_rectangle(slot_start, self.brect.y1, slot_start+vp_w, self.brect.y2, allegro5.color.map_rgba_f(1, 1, 1, 0.5), 2)
 	end
---]]
 end

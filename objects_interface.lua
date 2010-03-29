@@ -1,4 +1,5 @@
 dofile('object_selector.lua')
+dofile('objects_editor.lua')
 
 Objects_interface = { }
 
@@ -9,25 +10,25 @@ function Objects_interface:new ()
 	return o
 end
 
-function Objects_interface:init (objects)
+function Objects_interface:init ()
 	wrect = Rect:new ()
 	wrect:init(0, 0, width, height)
 	self.top_widget = Widget:new()
 	self.top_widget:init(wrect)
 	
-	self.objects = objects
+	self.objects = {}
 
---[[
-	self.heightmap_texturer = Heightmap_texturer:new ()
-	self.heightmap_texturer:init()
+	self.objects_editor = Objects_editor:new ()
+	self.objects_editor:init()
 
 	wrect = Rect:new ()
 	wrect:init(0, 128, width, height)
-	self.texturer_widget = Widget:new()
-	self.texturer_widget:init(wrect, self.heightmap_texturer)
-	self.texturer_widget:add_component(camera_controller)
-	self.top_widget:add_child(self.texturer_widget)
---]]
+	self.editor_widget = Widget:new()
+	self.editor_widget:init(wrect, self.objects_editor)
+	self.editor_widget:init(wrect, nil)
+	self.editor_widget:add_component(camera_controller)
+	self.top_widget:add_child(self.editor_widget)
+
 	self.current_object = 1
 
 	wrect = Rect:new ()
@@ -70,7 +71,10 @@ function Objects_interface:load_object ()
 		om.interface_transform:set_position(alledge_lua.vector3.new(-0.75, 0, -3))
 		om.interface_transform:set_rotation(alledge_lua.vector3.new(0, -90, 0))
 		alledge_lua.scenenode.attach_node(om.interface_transform, om.model_node);
-		table.insert(self.objects, om)
+
+		master_objects[master_objects_next_id] = om
+		table.insert(self.objects, master_objects_next_id)
+		master_objects_next_id = master_objects_next_id + 1
 
 		print("Objects: " .. table.getn(self.objects))
 --[[
@@ -85,5 +89,5 @@ end
 
 function Objects_interface:select_object (object_n)
 	self.current_object = object_n
---	self.heightmap_texturer.current_texture = texture_n
+	self.objects_editor:set_object(self.objects[object_n])
 end
