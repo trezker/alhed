@@ -64,25 +64,11 @@ alledge_lua.scenenode.attach_node(camera, light)
 transform = alledge_lua.transformnode.new()
 alledge_lua.scenenode.attach_node(light, transform)
 
+objects_root = alledge_lua.scenenode.new()
+alledge_lua.scenenode.attach_node(light, objects_root)
+
 master_objects = {}
 master_objects_next_id = 1
---[[
-handgun_model = alledge_lua.static_model.new()
-handgun_model:load_model("data/handgun.tmf")
-handgun_texture = alledge_lua.bitmap.new()
-b = handgun_texture:load("data/handgun.png")
-handgun_model:set_texture(handgun_texture)
-
-om = {}
-om.model = handgun_model
-om.model_node = alledge_lua.static_model_node.new()
-om.model_node:set_model(om.model)
-om.interface_transform = alledge_lua.transformnode.new()
-om.interface_transform:set_position(alledge_lua.vector3.new(-0.75, 0, -3))
-om.interface_transform:set_rotation(alledge_lua.vector3.new(0, -90, 0))
-alledge_lua.scenenode.attach_node(om.interface_transform, om.model_node);
-table.insert(object_models, om)
---]]
 
 
 function save_heightmap ()
@@ -254,16 +240,20 @@ while not quit do
 		end
 	end
 
-	modeler_interface.heightmap_modeler:update(dt)
-	texturer_interface.heightmap_texturer:update(dt)
-	painter_interface.heightmap_painter:update(dt)
-	objects_interface.objects_editor:update(dt)
-
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
 	alledge_lua.gl.enable(alledge_lua.gl.DEPTH_TEST)
 	alledge_lua.gl.enable(alledge_lua.gl.LIGHTING);
 	alledge_lua.gl.clear(alledge_lua.gl.DEPTH_BUFFER_BIT)
 
+	alledge_lua.scenenode.detach_node(light, objects_root)
+	root:apply()
+
+	modeler_interface.heightmap_modeler:update(dt)
+	texturer_interface.heightmap_texturer:update(dt)
+	painter_interface.heightmap_painter:update(dt)
+	objects_interface.objects_editor:update(dt)
+
+	alledge_lua.scenenode.attach_node(light, objects_root)
 	root:apply()
 
 	alledge_lua.gl.disable(alledge_lua.gl.LIGHTING);

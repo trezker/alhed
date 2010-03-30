@@ -10,7 +10,7 @@ end
 function Objects_editor:init()
 	self.transform_node = alledge_lua.transformnode.new()
 	self.transform_node:set_position(alledge_lua.vector3.new(0, 0, 0))
-	alledge_lua.scenenode.attach_node(heightmap, self.transform_node);
+	alledge_lua.scenenode.attach_node(objects_root, self.transform_node);
 end
 
 function Objects_editor:set_object(object)
