@@ -35,6 +35,27 @@ function Objects_editor:event(event)
 		if event.button == 1 then
 			self.lmb = false
 			unsubscribe_from_event (allegro5.mouse.EVENT_UP, self.event, self)
+
+			if self.current_object then
+				map_size_x = heightmap:get_size_x()
+				map_size_z = heightmap:get_size_z()
+				map_tilesize = heightmap:get_tilesize()
+				pos = self.transform_node:get_position()
+				wrect = Rect:new ()
+				wrect:init(0, 0, map_size_x*map_tilesize, map_size_z*map_tilesize)
+				if wrect:covers(pos.x, pos.z) then
+					print("Placed")
+					obj = {}
+					obj.node = self.transform_node
+					table.insert(objects, obj)
+
+
+					self.transform_node = alledge_lua.transformnode.new()
+					self.transform_node:set_position(alledge_lua.vector3.new(0, 0, 0))
+					alledge_lua.scenenode.attach_node(objects_root, self.transform_node);
+					alledge_lua.scenenode.attach_node(self.transform_node, master_objects[self.current_object].model_node)
+				end
+			end
 		end
 	end
 	if event.type == allegro5.mouse.EVENT_AXES then

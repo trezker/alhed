@@ -25,7 +25,6 @@ function Objects_interface:init ()
 	wrect:init(0, 128, width, height)
 	self.editor_widget = Widget:new()
 	self.editor_widget:init(wrect, self.objects_editor)
-	self.editor_widget:init(wrect, nil)
 	self.editor_widget:add_component(camera_controller)
 	self.top_widget:add_child(self.editor_widget)
 

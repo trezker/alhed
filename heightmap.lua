@@ -70,6 +70,7 @@ alledge_lua.scenenode.attach_node(light, objects_root)
 master_objects = {}
 master_objects_next_id = 1
 
+objects = {}
 
 function save_heightmap ()
 	native_dialog = allegro5.native_dialog.create ("", "save", "*.*", 0)
