@@ -10,6 +10,7 @@ end
 function Heightmap_modeler:init()
 	self.curve = {-1, -.7, 0, .3, 0}
 	self.radius = 10
+	self.update_objects_timer = 0
 end
 
 function Heightmap_modeler:set_curve(curve)
@@ -45,5 +46,15 @@ function Heightmap_modeler:update(dt)
 		alledge_lua.pop_view()
 
 		heightmap:apply_brush(oglpoint.x, oglpoint.z, self.radius, 1*dt, 5, self.curve);
+		
+		self.update_objects_timer = self.update_objects_timer + dt
+		if self.update_objects_timer > 1 then
+			self.update_objects_timer = 0
+			for k, v in pairs(objects) do
+				pos = v.node:get_position()
+				y = heightmap:get_height(pos.x, pos.z)
+				v.node:set_position(alledge_lua.vector3.new(pos.x, y, pos.z))
+			end
+		end
 	end
 end
