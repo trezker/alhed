@@ -28,6 +28,12 @@ function Heightmap_modeler:event(event)
 		if event.button == 1 then
 			self.lmb = false
 			unsubscribe_from_event (allegro5.mouse.EVENT_UP, self.event, self)
+			
+			for k, v in pairs(objects) do
+				pos = v.node:get_position()
+				y = heightmap:get_height(pos.x, pos.z)
+				v.node:set_position(alledge_lua.vector3.new(pos.x, y, pos.z))
+			end
 		end
 	end
 end
