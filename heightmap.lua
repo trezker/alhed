@@ -94,18 +94,22 @@ master_objects_next_id = 1
 objects = {}
 
 function save_heightmap ()
-	native_dialog = allegro5.native_dialog.create ("", "save", "*.*", 0)
+	native_dialog = allegro5.native_dialog.create ("", "save", "*.*", allegro5.native_dialog.FILECHOOSER_FOLDER)
 	native_dialog:show()
 	n = native_dialog:get_count()
 	if n>0 then
 		path = native_dialog:get_path(0)
 		print("Path: " .. path)
+		exists = allegro5.filesystem.filename_exists (path)
+		if not exists then
+			b = allegro5.filesystem.make_directory (path)
+		end
 		heightmap:save(path)
 	end
 end
 
 function load_heightmap ()
-	native_dialog = allegro5.native_dialog.create ("", "load", "*.*", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
+	native_dialog = allegro5.native_dialog.create ("", "load", "*.*", allegro5.native_dialog.FILECHOOSER_FOLDER)
 	native_dialog:show()
 	n = native_dialog:get_count()
 	if n>0 then
