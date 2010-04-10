@@ -41,6 +41,11 @@ function Objects_interface:init ()
 	self.load_animated_button:init(wrect, "Load animated", self.load_animated_object, self)
 
 	wrect = Rect:new ()
+	wrect:init(0, 0, 64, 16)
+	self.save_set_button = Button:new ()
+	self.save_set_button:init(wrect, "Save set", self.save_set, self)
+
+	wrect = Rect:new ()
 	wrect:init(64, 32, 6*64, 92)
 	self.object_selector = Object_selector:new ()
 	self.object_selector:init(wrect, self.objects, self.select_object, self)
@@ -48,7 +53,7 @@ function Objects_interface:init ()
 
 	--Layout
 	wrect = Rect:new ()
-	wrect:init(0, 32, 64, 64)
+	wrect:init(0, 32, 64, 96)
 	self.loaders_box = Widget_vbox:new()
 	self.loaders_box:init(wrect)
 
@@ -56,6 +61,7 @@ function Objects_interface:init ()
 
 	self.loaders_box:add_child(self.load_object_button)
 	self.loaders_box:add_child(self.load_animated_button)
+	self.loaders_box:add_child(self.save_set_button)
 
 	return self.top_widget
 end
@@ -78,6 +84,9 @@ function Objects_interface:load_object ()
 --		model:set_texture(texture)
 
 		om = {}
+		om.model_file = path
+		om.model_type = "tmf"
+		
 		om.model = model
 		om.model_node = alledge_lua.static_model_node.new()
 		om.model_node:set_model(om.model)
@@ -107,6 +116,9 @@ function Objects_interface:load_animated_object ()
 		model:load_model(path)
 
 		om = {}
+		om.model_file = path
+		om.model_type = "md5mesh"
+		
 		om.model = model
 		om.model_instance = alledge_lua.animated_model_instance.new()
 		om.model_instance:set_model(om.model)
@@ -130,4 +142,27 @@ end
 function Objects_interface:select_object (object_n)
 	self.current_object = object_n
 	self.objects_editor:set_object(self.objects[object_n])
+end
+
+function Objects_interface:save_set ()
+	print("Saving object set")
+
+	native_dialog = allegro5.native_dialog.create ("", "save", "*.*", allegro5.native_dialog.FILECHOOSER_FOLDER)
+	native_dialog:show()
+	n = native_dialog:get_count()
+	if n>0 then
+		master_objects.filename = native_dialog:get_path(0)
+		print("Path: " .. master_objects.filename)
+
+		objects_file = io.open(master_objects.filename, "w")
+		obj_set_n = table.getn(master_objects)
+		objects_file:write(obj_set_n .. "\n\n")
+		for k, v in pairs(master_objects) do
+			if v.model_file then
+				objects_file:write(v.model_file .. "\n")
+				objects_file:write(v.model_type .. "\n\n")
+			end
+		end
+		objects_file:close()
+	end
 end

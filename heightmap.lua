@@ -104,7 +104,14 @@ function save_heightmap ()
 		if not exists then
 			b = allegro5.filesystem.make_directory (path)
 		end
+
 		heightmap:save(path)
+
+		objects_file = io.open(path .. "/objects", "w")
+		obj_set_n = table.getn(master_objects)
+		objects_file:write(obj_set_n .. "\n")
+		objects_file:write("Test objects file writing")
+		objects_file:close()
 	end
 end
 
