@@ -20,6 +20,7 @@ dofile('texturer_interface.lua')
 dofile('painter_interface.lua')
 dofile('new_map_interface.lua')
 dofile('objects_interface.lua')
+dofile('save_load.lua')
 
 fov = 45
 near = 1
