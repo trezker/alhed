@@ -33,12 +33,12 @@ function Objects_interface:init ()
 	wrect = Rect:new ()
 	wrect:init(0, 0, 64, 16)
 	self.load_object_button = Button:new ()
-	self.load_object_button:init(wrect, "Load static", self.load_object, self)
+	self.load_object_button:init(wrect, "Load static", self.load_object, self, load_static_object)
 
 	wrect = Rect:new ()
 	wrect:init(0, 0, 64, 16)
 	self.load_animated_button = Button:new ()
-	self.load_animated_button:init(wrect, "Load animated", self.load_animated_object, self)
+	self.load_animated_button:init(wrect, "Load animated", self.load_object, self, load_animated_object )
 
 	wrect = Rect:new ()
 	wrect:init(0, 0, 64, 16)
@@ -66,7 +66,7 @@ function Objects_interface:init ()
 	return self.top_widget
 end
 
-function Objects_interface:load_object ()
+function Objects_interface:load_object (load_func)
 	print("visible dialog")
 	native_dialog = allegro5.native_dialog.create ("", "Select object", "*.tmf", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
 	native_dialog:show()
@@ -74,35 +74,7 @@ function Objects_interface:load_object ()
 	if n>0 then
 		path = native_dialog:get_path(0)
 		
-		om = load_static_object (path)
-
-		om.interface_transform = alledge_lua.transformnode.new()
-		om.interface_transform:set_position(alledge_lua.vector3.new(-0.75, 0, -3))
-		om.interface_transform:set_rotation(alledge_lua.vector3.new(0, -90, 0))
-		alledge_lua.scenenode.attach_node(om.interface_transform, om.model_node);
-
-		master_objects[master_objects_next_id] = om
-		table.insert(self.objects, master_objects_next_id)
-		master_objects_next_id = master_objects_next_id + 1
-
-		print("Objects: " .. table.getn(self.objects))
-	end
-end
-
-function Objects_interface:load_animated_object ()
-	print("visible dialog")
-	native_dialog = allegro5.native_dialog.create ("", "Select object", "*.md5mesh", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
-	native_dialog:show()
-	n = native_dialog:get_count()
-	if n>0 then
-		path = native_dialog:get_path(0)
-		
-		om = load_animated_object (path)
-
-		om.interface_transform = alledge_lua.transformnode.new()
-		om.interface_transform:set_position(alledge_lua.vector3.new(0, -6, -20))
-		om.interface_transform:set_rotation(alledge_lua.vector3.new(0, 0, 0))
-		alledge_lua.scenenode.attach_node(om.interface_transform, om.model_node);
+		om = load_func (path)
 
 		master_objects[master_objects_next_id] = om
 		table.insert(self.objects, master_objects_next_id)
