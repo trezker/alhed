@@ -35,7 +35,9 @@ load_animated_object = function(path)
 	om.interface_transform:set_rotation(alledge_lua.vector3.new(0, 0, 0))
 	alledge_lua.scenenode.attach_node(om.interface_transform, om.model_node);
 
-	return om
+	master_objects[master_objects_next_id] = om
+	master_objects_next_id = master_objects_next_id + 1
+	return master_objects_next_id - 1
 end
 
 load_static_object = function (path)
@@ -54,5 +56,9 @@ load_static_object = function (path)
 	om.interface_transform:set_position(alledge_lua.vector3.new(-0.75, 0, -3))
 	om.interface_transform:set_rotation(alledge_lua.vector3.new(0, -90, 0))
 	alledge_lua.scenenode.attach_node(om.interface_transform, om.model_node);
-	return om
+
+	master_objects[master_objects_next_id] = om
+	master_objects_next_id = master_objects_next_id + 1
+
+	return master_objects_next_id - 1
 end

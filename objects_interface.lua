@@ -67,20 +67,14 @@ function Objects_interface:init ()
 end
 
 function Objects_interface:load_object (load_func)
-	print("visible dialog")
 	native_dialog = allegro5.native_dialog.create ("", "Select object", "*.tmf", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
 	native_dialog:show()
 	n = native_dialog:get_count()
 	if n>0 then
 		path = native_dialog:get_path(0)
 		
-		om = load_func (path)
-
-		master_objects[master_objects_next_id] = om
-		table.insert(self.objects, master_objects_next_id)
-		master_objects_next_id = master_objects_next_id + 1
-
-		print("Objects: " .. table.getn(self.objects))
+		obj_id = load_func (path)
+		table.insert(self.objects, obj_id)
 	end
 end
 
