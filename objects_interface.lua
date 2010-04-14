@@ -110,21 +110,8 @@ function Objects_interface:load_animated_object ()
 	n = native_dialog:get_count()
 	if n>0 then
 		path = native_dialog:get_path(0)
-		print("Path: " .. path)
 		
-		model = alledge_lua.animated_model.new()
-		model:load_model(path)
-
-		om = {}
-		om.model_file = path
-		om.model_type = "md5mesh"
-		
-		om.model = model
-		om.model_instance = alledge_lua.animated_model_instance.new()
-		om.model_instance:set_model(om.model)
---		om.model_instance:update(1)
-		om.model_node = alledge_lua.animated_model_node.new()
-		om.model_node:set_model(om.model_instance)
+		load_animated_object (path)
 
 		om.interface_transform = alledge_lua.transformnode.new()
 		om.interface_transform:set_position(alledge_lua.vector3.new(0, -6, -20))

@@ -13,3 +13,22 @@ save_object_set = function (path)
 	end
 	objects_file:close()
 end
+
+load_animated_object = function(path)
+	print("Path: " .. path)
+	
+	model = alledge_lua.animated_model.new()
+	model:load_model(path)
+
+	om = {}
+	om.model_file = path
+	om.model_type = "md5mesh"
+	
+	om.model = model
+	om.model_instance = alledge_lua.animated_model_instance.new()
+	om.model_instance:set_model(om.model)
+	om.model_node = alledge_lua.animated_model_node.new()
+	om.model_node:set_model(om.model_instance)
+
+	return om
+end
