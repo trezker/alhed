@@ -32,3 +32,17 @@ load_animated_object = function(path)
 
 	return om
 end
+
+load_static_object = function (path)
+	model = alledge_lua.static_model.new()
+	model:load_model(path)
+
+	om = {}
+	om.model_file = path
+	om.model_type = "tmf"
+	
+	om.model = model
+	om.model_node = alledge_lua.static_model_node.new()
+	om.model_node:set_model(om.model)
+	return om
+end

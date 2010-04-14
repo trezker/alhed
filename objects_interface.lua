@@ -73,23 +73,9 @@ function Objects_interface:load_object ()
 	n = native_dialog:get_count()
 	if n>0 then
 		path = native_dialog:get_path(0)
-		print("Path: " .. path)
 		
-		model = alledge_lua.static_model.new()
-		model:load_model(path)
+		om = load_static_object (path)
 
-		--Todo: models should not require texture to be rendered
---		texture = alledge_lua.bitmap.new()
---		b = texture:load("data/handgun.png")
---		model:set_texture(texture)
-
-		om = {}
-		om.model_file = path
-		om.model_type = "tmf"
-		
-		om.model = model
-		om.model_node = alledge_lua.static_model_node.new()
-		om.model_node:set_model(om.model)
 		om.interface_transform = alledge_lua.transformnode.new()
 		om.interface_transform:set_position(alledge_lua.vector3.new(-0.75, 0, -3))
 		om.interface_transform:set_rotation(alledge_lua.vector3.new(0, -90, 0))
@@ -111,7 +97,7 @@ function Objects_interface:load_animated_object ()
 	if n>0 then
 		path = native_dialog:get_path(0)
 		
-		load_animated_object (path)
+		om = load_animated_object (path)
 
 		om.interface_transform = alledge_lua.transformnode.new()
 		om.interface_transform:set_position(alledge_lua.vector3.new(0, -6, -20))
