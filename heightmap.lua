@@ -72,23 +72,6 @@ alledge_lua.scenenode.attach_node(light, transform)
 objects_root = alledge_lua.scenenode.new()
 alledge_lua.scenenode.attach_node(light, objects_root)
 
---[[
-	test_model = alledge_lua.animated_model.new()
-	test_model:load_model("data/Male.md5mesh")
-	om = {}
-	om.model = test_model
-	om.model_instance = alledge_lua.animated_model_instance.new()
-	om.model_instance:set_model(om.model)
-	om.model_node = alledge_lua.animated_model_node.new()
-	om.model_node:set_model(om.model_instance)
-
-	om.interface_transform = alledge_lua.transformnode.new()
-	om.interface_transform:set_position(alledge_lua.vector3.new(10, 0, 10))
-	om.interface_transform:set_rotation(alledge_lua.vector3.new(0, -90, 0))
-	alledge_lua.scenenode.attach_node(om.interface_transform, om.model_node);
-	alledge_lua.scenenode.attach_node(light, om.interface_transform)
---]]
-
 master_objects = {}
 master_objects_next_id = 1
 
